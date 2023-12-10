@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>org.railway</groupId>
-    <artifactId>schedule-service</artifactId>
+    <artifactId>ticket-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Schedule service</name>
 
