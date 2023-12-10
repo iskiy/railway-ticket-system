@@ -5,27 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="vcs.xml">
-      <change afterPath="$PROJECT_DIR$/railway-ticket-system.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/.idea/jpa-buddy.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/controller/TicketController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/model/TicketDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/model/TicketEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/model/utils/ErrorMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/model/utils/ResponseWrapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/model/utils/RestErrorList.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/repository/TicketRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/service/TicketService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/utils/ErrorsGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/resources/migrations/000001_init.down.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/resources/migrations/000001_init.up.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule-service/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule-service/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/ScheduleServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/config/SecretConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/schedule-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/ScheduleServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/src/main/java/org/railway/ScheduleServiceApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +60,7 @@
       <updated>1702175961841</updated>
       <workItem from="1702175965252" duration="2163000" />
       <workItem from="1702212777493" duration="623000" />
-      <workItem from="1702219438031" duration="1540000" />
+      <workItem from="1702219438031" duration="2145000" />
     </task>
     <task id="LOCAL-00001" summary="vcs.xml">
       <created>1702211615772</created>
