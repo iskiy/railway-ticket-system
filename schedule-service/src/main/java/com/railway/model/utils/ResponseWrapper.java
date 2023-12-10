@@ -1,4 +1,4 @@
-package org.railway.model.utils;
+package com.railway.model.utils;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 

@@ -1,6 +1,6 @@
-package org.railway.repository;
+package com.railway.repository;
 
-import org.railway.model.TicketEntity;
+import com.railway.model.TicketEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.Timestamp;

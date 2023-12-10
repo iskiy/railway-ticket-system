@@ -10,10 +10,10 @@ services:
     ports:
       - "5434:5432"
   ticketservice:
+    build: /
     image: railway/ticket-service:1.0-SNAPSHOT
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     ports:
       - "8080:8080"
 volumes:

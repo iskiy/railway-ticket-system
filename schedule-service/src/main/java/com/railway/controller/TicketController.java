@@ -1,20 +1,15 @@
-package org.railway.controller;
+package com.railway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.railway.service.TicketService;
 import lombok.RequiredArgsConstructor;
-import org.railway.model.TicketDTO;
-import org.railway.model.TicketEntity;
-import org.railway.service.TicketService;
-import org.railway.utils.ErrorsGenerator;
+import com.railway.model.TicketDTO;
+import com.railway.model.TicketEntity;
+import com.railway.utils.ErrorsGenerator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor

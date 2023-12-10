@@ -1,4 +1,4 @@
-package org.railway.model;
+package com.railway.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

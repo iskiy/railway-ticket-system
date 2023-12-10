@@ -1,31 +1,13 @@
-#stage 1
-#Start with a base image containing Java runtime
-FROM openjdk:19-slim as build
+FROM openjdk:17-jdk-slim AS build
 
-# Add Maintainer Info
-LABEL maintainer="Andrii Chaliuk <andrii.chaliuk@gmail.com>"
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 
-# The application's jar file
-ARG JAR_FILE
+RUN mvn clean package -DskipTests
 
-# Add the application's jar to the container
-COPY ${JAR_FILE} app.jar
+FROM openjdk:17-jdk-alpine
 
-#unpackage jar file
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf /app.jar)
+COPY --from=build /app/target/ticket-service-1.0-SNAPSHOT.jar /ticket-service.jar
 
-#stage 2
-#Same Java runtime
-FROM openjdk:19-slim
-
-#Add volume pointing to /tmp
-VOLUME /tmp
-
-#Copy unpackaged application to new container
-ARG DEPENDENCY=/target/dependency
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib /app/lib
-COPY --from=build ${DEPENDENCY}/META-INF /app/META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes /app
-
-#execute the application
-ENTRYPOINT ["java","-cp","app:app/lib/*","org.railway.ScheduleServiceApplication"]
+ENTRYPOINT ["java", "-jar", "/ticket-service.jar"]

@@ -1,4 +1,4 @@
-package org.railway.utils;
+package com.railway.utils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
