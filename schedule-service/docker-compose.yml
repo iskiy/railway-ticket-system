@@ -1,29 +1,14 @@
-version: '3'
+version: '3.8'
 
 services:
   postgres:
-    image: postgres
+    image: postgres:16
     environment:
-      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
-      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: ticketdb
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
     ports:
-      - "14432:5432"
-    volumes:
-      - ./postgres-init.sql:/docker-entrypoint-initdb.d/postgres-init.sql:ro
-    networks:
-      - postgres-network
+      - "5434:5432"
 
-  test-pgadmin-compose:
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_PASSWORD: "postgres"
-    ports:
-      - "16543:80"
-    depends_on:
-      - postgres
-    networks:
-      - postgres-network
-
-networks:
-  postgres-network:
-    driver: bridge
+volumes:
+  postgres_data:
