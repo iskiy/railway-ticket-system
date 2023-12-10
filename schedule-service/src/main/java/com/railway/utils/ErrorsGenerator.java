@@ -17,11 +17,11 @@ public class ErrorsGenerator {
 
     private final ObjectMapper objectMapper;
 
-    public static final String EMPTY_ERRORS = """
-                                               {
-                                                   "errors": []
-                                               }
-                                               """;
+    public static final String EMPTY_ERRORS = 
+    "{\n" +
+    "    \"errors\": []\n" +
+    "}";
+
 
     public <T> String generateErrors(Set<ConstraintViolation<T>> violations) {
         ObjectNode errorsNode = objectMapper.createObjectNode();

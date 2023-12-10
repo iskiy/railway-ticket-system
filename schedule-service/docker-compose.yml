@@ -1,19 +1,19 @@
 version: '3.8'
 
 services:
-  postgres:
+  db:
     image: postgres:16
     environment:
       POSTGRES_DB: ticketdb
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     ports:
-      - "5434:5432"
+      - "5432:5432"
   ticketservice:
-    build: /
+    build: .
     image: railway/ticket-service:1.0-SNAPSHOT
     depends_on:
-      - postgres
+      - db
     ports:
       - "8080:8080"
 volumes:

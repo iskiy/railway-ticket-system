@@ -1,0 +1,11 @@
+version: "1"
+packages:
+  - name: "sqlc"
+    path: "./internal/psql/sqlc/"
+    queries: "./internal/psql/sqlc/queries/"
+    schema: "migrations/"
+    engine: "postgresql"
+    emit_json_tags: true
+    emit_prepared_queries: false
+    emit_exact_table_names: false
+    emit_empty_slices: true
