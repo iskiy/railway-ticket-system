@@ -1,12 +1,12 @@
 package com.railway.service;
 
-import com.railway.repository.TicketRepository;
-import lombok.RequiredArgsConstructor;
 import com.railway.model.TicketDTO;
 import com.railway.model.TicketEntity;
+import com.railway.repository.TicketRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
