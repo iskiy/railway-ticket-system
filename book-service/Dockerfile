@@ -10,6 +10,6 @@ RUN mvn clean package -DskipTests
 
 FROM openjdk:17-jdk-slim
 
-COPY --from=build /app/target/ticket-service-1.0-SNAPSHOT.jar /ticket-service.jar
+COPY --from=build /app/target/booking-service-1.0-SNAPSHOT.jar /booking-service.jar
 
-ENTRYPOINT ["java", "-jar", "/ticket-service.jar"]
+ENTRYPOINT ["java", "-jar", "/booking-service.jar"]

@@ -4,11 +4,11 @@ services:
   db:
     image: postgres:16
     environment:
-      POSTGRES_DB: ticketdb
+      POSTGRES_DB: bookingdb
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     ports:
-      - "5432:5432"
+      - "5435:5432"
   ticketservice:
     build: .
     image: railway/ticket-service:1.0-SNAPSHOT

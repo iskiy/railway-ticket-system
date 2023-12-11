@@ -4,8 +4,8 @@ new_migration:
 	migrate create -ext sql -dir migration -seq $(name)
 
 migrate_up:
-	migrate -path migrations -database "postgresql://root:password@localhost:5434/ticketdb?sslmode=disable" -verbose up
+	migrate -path migrations -database "postgresql://root:password@localhost:5435/bookingdb?sslmode=disable" -verbose up
 
 migrate_down:
-	migrate -path migrations -database "postgresql://root:password@localhost:5434/ticketdb?sslmode=disable" -verbose down
+	migrate -path migrations -database "postgresql://root:password@localhost:5435/bookingdb?sslmode=disable" -verbose down
 
