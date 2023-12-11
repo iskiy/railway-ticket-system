@@ -81,20 +81,20 @@ public class TicketController {
         ticketEntity.setPrice(ticketDTO.getPrice());
         ticketEntity.setJourneyDate(ticketDTO.getJourneyDate());
 
-        TicketEntity updatedLicenseKey = ticketService.updateTicket(ticketEntity);
+        TicketEntity updatedTicket = ticketService.updateTicket(ticketEntity);
 
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         new TicketDTO(
-                                updatedLicenseKey.getTicketId(),
-                                updatedLicenseKey.getTrainId(),
-                                updatedLicenseKey.getJourneyDate(),
-                                updatedLicenseKey.getArrivalStation(),
-                                updatedLicenseKey.getDepartureStation(),
-                                updatedLicenseKey.getCarriageId(),
-                                updatedLicenseKey.getPrice(),
-                                updatedLicenseKey.getSeatId(),
-                                updatedLicenseKey.getPaymentId()
+                                updatedTicket.getTicketId(),
+                                updatedTicket.getTrainId(),
+                                updatedTicket.getJourneyDate(),
+                                updatedTicket.getArrivalStation(),
+                                updatedTicket.getDepartureStation(),
+                                updatedTicket.getCarriageId(),
+                                updatedTicket.getPrice(),
+                                updatedTicket.getSeatId(),
+                                updatedTicket.getPaymentId()
                         )
                 )
         );

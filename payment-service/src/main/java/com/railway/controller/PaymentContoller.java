@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequiredArgsConstructor
-public class TicketController {
+public class PaymentController {
 
     private final ObjectMapper objectMapper;
     private final PaymentService paymentService;

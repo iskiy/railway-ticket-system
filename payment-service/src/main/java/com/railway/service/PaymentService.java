@@ -18,13 +18,12 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public PaymentEntity createPayment(PaymentDTO ticket) {
+    public PaymentEntity createPayment(PaymentDTO paymentDTO) {
         PaymentEntity newPayment = PaymentEntity.builder()
-                .paymentId(ticket.getPaymentId())
-                .amount(ticket.getAmount())
-                .paymentTimestamp(ticket.getPaymentTimestamp())
-                .method(ticket.getMethod())
-                .status(ticket.getStatus())
+                .amount(paymentDTO.getAmount())
+                .paymentTimestamp(paymentDTO.getPaymentTimestamp())
+                .method(paymentDTO.getMethod())
+                .status(paymentDTO.getStatus())
                 .build();
 
         return paymentRepository.saveAndFlush(newPayment);
