@@ -55,6 +55,7 @@ services:
       - PORT=8081
     ports:
       - 8081:8081
+      - 50052:50051
 
   train_migrate:
     image: migrate/migrate

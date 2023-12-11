@@ -5,11 +5,10 @@ message CheckSeatAvailabilityAndReserveRequest {
     uint64 seat_id = 1;
   }
   
-  message CheckSeatAvailabilityAndReserveResponse {
+message CheckSeatAvailabilityAndReserveResponse {
     uint64 seat_id =1;
-  }
-  
-  service SeatReservation {
+}
+
+service SeatReservation {
     rpc CheckSeatAvailabilityAndReserve (CheckSeatAvailabilityAndReserveRequest) returns (CheckSeatAvailabilityAndReserveResponse);
-  }
-  
+}
