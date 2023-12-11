@@ -215,7 +215,7 @@ func (t *TrainManagerHandler) CreateSeat(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
-
+	req.IsAvailable = true
 	trainID, err := t.Repo.CreateSeat(c.Context(), req)
 	if err != nil {
 		return err

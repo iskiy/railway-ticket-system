@@ -1,0 +1,16 @@
+syntax = "proto3";
+package train;
+
+option go_package = "github.com/iskiy/railway-ticket-system/train-service/protogen";
+
+message CheckSeatAvailabilityAndReserveRequest {
+    uint64 seat_id = 1;
+  }
+  
+message CheckSeatAvailabilityAndReserveResponse {
+  bool is_available = 1;
+}
+
+service SeatReservation {
+    rpc CheckSeatAvailabilityAndReserve (CheckSeatAvailabilityAndReserveRequest) returns (CheckSeatAvailabilityAndReserveResponse);
+}

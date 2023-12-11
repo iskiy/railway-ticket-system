@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/iskiy/railway-ticket-system/train-service/internal/delivery/grpc/seat"
 	"github.com/iskiy/railway-ticket-system/train-service/internal/delivery/rest"
 	"github.com/iskiy/railway-ticket-system/train-service/internal/psql/sqlc"
 	_ "github.com/lib/pq"
@@ -33,7 +34,15 @@ func main() {
 	}
 
 	trainManager := rest.New(sqlc.New(conn))
-
+	grpcServer := seat.SeatReservationServer{Repo: sqlc.New(conn),
+		Conn: conn,
+	}
+	go func() {
+		err := seat.StartServer(&grpcServer, "50051")
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}()
 	// Stations
 	app.Post("/stations", trainManager.CreateStation)
 	app.Get("/stations/:id", trainManager.GetStation)
