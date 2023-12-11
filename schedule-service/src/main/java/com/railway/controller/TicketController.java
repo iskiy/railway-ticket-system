@@ -2,6 +2,8 @@ package com.railway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.railway.model.TicketRouteDTO;
+import com.railway.model.TicketScheduleDTO;
 import com.railway.service.TicketService;
 import lombok.RequiredArgsConstructor;
 import com.railway.model.TicketDTO;
@@ -25,6 +27,121 @@ public class TicketController {
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         ticketService.findAllByTrainId(trainId).stream().map(
+                                ticketEntity -> new TicketDTO(
+                                        ticketEntity.getTicketId(),
+                                        ticketEntity.getTrainId(),
+                                        ticketEntity.getJourneyDate(),
+                                        ticketEntity.getArrivalStation(),
+                                        ticketEntity.getDepartureStation(),
+                                        ticketEntity.getCarriageId(),
+                                        ticketEntity.getPrice(),
+                                        ticketEntity.getSeatId(),
+                                        ticketEntity.getPaymentId()
+                                )
+                        ).toList()
+                )
+        );
+    }
+
+    @RequestMapping(value = "/ticket/all", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllTickets() throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        ticketService.findAllTicket().stream().map(
+                                ticketEntity -> new TicketDTO(
+                                        ticketEntity.getTicketId(),
+                                        ticketEntity.getTrainId(),
+                                        ticketEntity.getJourneyDate(),
+                                        ticketEntity.getArrivalStation(),
+                                        ticketEntity.getDepartureStation(),
+                                        ticketEntity.getCarriageId(),
+                                        ticketEntity.getPrice(),
+                                        ticketEntity.getSeatId(),
+                                        ticketEntity.getPaymentId()
+                                )
+                        ).toList()
+                )
+        );
+    }
+
+    @RequestMapping(value = "/ticket/arrival_station", method = RequestMethod.GET)
+    public ResponseEntity<String> getTicketsByArrivalStation(@RequestBody final String arrivalStation)
+            throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        ticketService.findAllByArrivalStation(arrivalStation).stream().map(
+                                ticketEntity -> new TicketDTO(
+                                        ticketEntity.getTicketId(),
+                                        ticketEntity.getTrainId(),
+                                        ticketEntity.getJourneyDate(),
+                                        ticketEntity.getArrivalStation(),
+                                        ticketEntity.getDepartureStation(),
+                                        ticketEntity.getCarriageId(),
+                                        ticketEntity.getPrice(),
+                                        ticketEntity.getSeatId(),
+                                        ticketEntity.getPaymentId()
+                                )
+                        ).toList()
+                )
+        );
+    }
+
+    @RequestMapping(value = "/ticket/departure_station", method = RequestMethod.GET)
+    public ResponseEntity<String> getTicketsByDepartureStation(@RequestBody final String departureStation)
+            throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        ticketService.findAllByDepartureStation(departureStation).stream().map(
+                                ticketEntity -> new TicketDTO(
+                                        ticketEntity.getTicketId(),
+                                        ticketEntity.getTrainId(),
+                                        ticketEntity.getJourneyDate(),
+                                        ticketEntity.getArrivalStation(),
+                                        ticketEntity.getDepartureStation(),
+                                        ticketEntity.getCarriageId(),
+                                        ticketEntity.getPrice(),
+                                        ticketEntity.getSeatId(),
+                                        ticketEntity.getPaymentId()
+                                )
+                        ).toList()
+                )
+        );
+    }
+
+    @RequestMapping(value = "/ticket/arrival_departure_stations", method = RequestMethod.GET)
+    public ResponseEntity<String> getTicketsByArrivalStationAndDepartureStation(@RequestBody final TicketRouteDTO routeDTO)
+            throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        ticketService.findAllByArrivalStationAndDepartureStation(
+                                routeDTO.getArrivalStation(),
+                                routeDTO.getDepartureStation()).stream().map(
+                                ticketEntity -> new TicketDTO(
+                                        ticketEntity.getTicketId(),
+                                        ticketEntity.getTrainId(),
+                                        ticketEntity.getJourneyDate(),
+                                        ticketEntity.getArrivalStation(),
+                                        ticketEntity.getDepartureStation(),
+                                        ticketEntity.getCarriageId(),
+                                        ticketEntity.getPrice(),
+                                        ticketEntity.getSeatId(),
+                                        ticketEntity.getPaymentId()
+                                )
+                        ).toList()
+                )
+        );
+    }
+
+    @RequestMapping(value = "/ticket/arrival_departure_stations", method = RequestMethod.GET)
+    public ResponseEntity<String> getTicketsByArrivalStationAndDepartureStationAndJourneyDate(
+            @RequestBody final TicketScheduleDTO scheduleDTO)
+            throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        ticketService.findAllByArrivalStationAndDepartureStationAndJourneyDate(
+                                scheduleDTO.getArrivalStation(),
+                                scheduleDTO.getDepartureStation(),
+                                scheduleDTO.getJourneyDate()).stream().map(
                                 ticketEntity -> new TicketDTO(
                                         ticketEntity.getTicketId(),
                                         ticketEntity.getTrainId(),
