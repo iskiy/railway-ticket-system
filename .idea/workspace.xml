@@ -4,13 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="vcs.xml">
-      <change afterPath="$PROJECT_DIR$/proto/booking.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/proto/payment.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/proto/ticket.proto" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/proto/train.proto" afterDir="false" />
+    <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="proto booking, payment, ticket">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/schedule-service/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/schedule-service/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/TicketController.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/BookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/model/BookingStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/repository/BookingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/repository/BookingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/service/BookingService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/resources/migrations/000001_init.up.sql" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/resources/migrations/000001_init.up.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,17 +31,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/KMA/MP/Rail/railway-ticket-system/proto",
-    "project.structure.last.edited": "Facets",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/KMA/MP/Rail/railway-ticket-system/proto&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Facets&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\KMA\MP\Rail\railway-ticket-system\proto" />
@@ -64,7 +66,7 @@
       <updated>1702175961841</updated>
       <workItem from="1702175965252" duration="2163000" />
       <workItem from="1702212777493" duration="623000" />
-      <workItem from="1702219438031" duration="13584000" />
+      <workItem from="1702219438031" duration="14314000" />
     </task>
     <task id="LOCAL-00001" summary="vcs.xml">
       <created>1702211615772</created>
@@ -73,7 +75,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702211615772</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="proto booking, payment, ticket">
+      <created>1702316284633</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702316284633</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -92,6 +101,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="vcs.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="vcs.xml" />
+    <MESSAGE value="proto booking, payment, ticket" />
+    <option name="LAST_COMMIT_MESSAGE" value="proto booking, payment, ticket" />
   </component>
 </project>

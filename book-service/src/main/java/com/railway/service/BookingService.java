@@ -40,8 +40,9 @@ public class BookingService {
         BookingEntity newBooking = BookingEntity.builder()
                 .userEmail(bookingDTO.getUserEmail())
                 .seatId(bookingDTO.getSeatId())
-                .carriageId(bookingDTO.getCarriageId())
-                .trainId(bookingDTO.getTrainId())
+                .price(bookingDTO.getPrice())
+//                .carriageId(bookingDTO.getCarriageId())
+//                .trainId(bookingDTO.getTrainId())
                 .bookingDate(bookingDTO.getBookingDate())
                 .status(bookingDTO.getStatus())
                 .build();
@@ -77,15 +78,15 @@ public class BookingService {
         return bookingRepository.findBySeatId(seatId).orElse(null);
     }
 
-    @Transactional
-    public List<BookingEntity> findAllByCarriageId(Long carriageId) {
-        return bookingRepository.findAllByCarriageId(carriageId);
-    }
-
-    @Transactional
-    public List<BookingEntity> findAllByTrainId(Long trainId) {
-        return bookingRepository.findAllByTrainId(trainId);
-    }
+//    @Transactional
+//    public List<BookingEntity> findAllByCarriageId(Long carriageId) {
+//        return bookingRepository.findAllByCarriageId(carriageId);
+//    }
+//
+//    @Transactional
+//    public List<BookingEntity> findAllByTrainId(Long trainId) {
+//        return bookingRepository.findAllByTrainId(trainId);
+//    }
 
     @Transactional
     public List<BookingEntity> findAllByBookingDate(Timestamp timestamp) {

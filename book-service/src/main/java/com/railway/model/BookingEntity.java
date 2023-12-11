@@ -30,13 +30,17 @@ public class BookingEntity {
     @JdbcTypeCode(SqlTypes.BIGINT)
     private Long seatId;
 
-    @Column(name = "carriage_id", nullable = false)
+    @Column(name = "price", nullable = false)
     @JdbcTypeCode(SqlTypes.BIGINT)
-    private Long carriageId;
+    private Long price;
+//
+//    @Column(name = "carriage_id", nullable = false)
+//    @JdbcTypeCode(SqlTypes.BIGINT)
+//    private Long carriageId;
 
-    @Column(name = "train_id", nullable = false)
-    @JdbcTypeCode(SqlTypes.BIGINT)
-    private Long trainId;
+//    @Column(name = "train_id", nullable = false)
+//    @JdbcTypeCode(SqlTypes.BIGINT)
+//    private Long trainId;
 
     @Column(name = "booking_date", nullable = false)
     @JdbcTypeCode(SqlTypes.TIMESTAMP)
