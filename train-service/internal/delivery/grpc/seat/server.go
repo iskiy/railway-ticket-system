@@ -22,7 +22,7 @@ type SeatReservationServer struct {
 }
 
 func StartServer(seatService *SeatReservationServer, port string) error {
-	lis, err := net.Listen("tcp", "0.0.0.0:"+port)
+	lis, err := net.Listen("tcp", ":9090")
 	if err != nil {
 		return err
 	}

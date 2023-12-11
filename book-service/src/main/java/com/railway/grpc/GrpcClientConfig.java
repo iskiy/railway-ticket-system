@@ -10,7 +10,7 @@ public class GrpcClientConfig {
 
     @Bean
     public ManagedChannel managedChannel() {
-        return ManagedChannelBuilder.forAddress("train_service", 50051)
+        return ManagedChannelBuilder.forAddress("train_service",  9090)
                                     .usePlaintext()
                                     .build();
     }

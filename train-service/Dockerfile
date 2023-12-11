@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=build-stage app/main main
 
 EXPOSE 8081
-EXPOSE 8090
+EXPOSE 9090
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup -u 1000 && chown appuser:appgroup /home/appuser
 USER appuser:appgroup

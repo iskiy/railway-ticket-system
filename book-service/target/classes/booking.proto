@@ -1,0 +1,27 @@
+syntax = "proto3";
+package booking;
+
+
+message GetBookingInfoAndCheckReservationRequest {
+  uint32 booking_id = 1;
+}
+
+message GetBookingInfoAndCheckReservationResponse {
+  uint32 booking_id = 1;
+  string user_email = 2;
+  uint64 seat_id = 3;
+}
+
+message RemoveBookingRequest {
+  uint32 booking_id = 1;
+}
+
+message RemoveBookingResponse {
+  bool success = 1;     
+  string message = 2;
+}
+
+service BookingService {
+  rpc GetBookingInfoAndCheckReservation (GetBookingInfoAndCheckReservationRequest) returns (GetBookingInfoAndCheckReservationResponse);
+  rpc RemoveBooking (RemoveBookingRequest) returns (RemoveBookingResponse);
+}

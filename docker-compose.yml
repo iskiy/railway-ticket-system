@@ -2,35 +2,35 @@ version: '3.8'
 
 services:
  # Ticket service
-  ticket_db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: ticketdb
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - "5432:5432"
+#   ticket_db:
+#     image: postgres:16
+#     environment:
+#       POSTGRES_DB: ticketdb
+#       POSTGRES_USER: root
+#       POSTGRES_PASSWORD: password
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     ports:
+#       - "5432:5432"
 
-  ticket_service:
-    build:
-      context: ./schedule-service
-    image: railway/ticket-service:1.0-SNAPSHOT
-    depends_on:
-      ticket_db:
-        condition: service_healthy
-    environment:
-      DB_URL: jdbc:postgresql://ticket_db:5432/ticketdb?sslmode=disable
-      DB_USERNAME: root
-      DB_PASSWORD: password
-    ports:
-      - "8080:8080"
+#   ticket_service:
+#     build:
+#       context: ./schedule-service
+#     image: railway/ticket-service:1.0-SNAPSHOT
+#     depends_on:
+#       ticket_db:
+#         condition: service_healthy
+#     environment:
+#       DB_URL: jdbc:postgresql://ticket_db:5432/ticketdb?sslmode=disable
+#       DB_USERNAME: root
+#       DB_PASSWORD: password
+#     ports:
+#       - "8080:8080"
 
- # Train service
+#  # Train service
   train_db:
     image: postgres:16
     environment:
@@ -55,7 +55,7 @@ services:
       - PORT=8081
     ports:
       - 8081:8081
-      - 50052:50051
+      - 9090:9090
 
   train_migrate:
     image: migrate/migrate
@@ -63,8 +63,8 @@ services:
       train_db:
         condition: service_healthy
     volumes:
-      - ./migrations:/migrations
-    command: [ "-path", "/train-service/migrations", "-database", "postgresql://root:password@train_db:5432/traindb?sslmode=disable", "up" ]
+      - ./train-service/migrations:/migrations
+    command: [ "-path", "/migrations", "-database", "postgresql://root:password@train_db:5432/traindb?sslmode=disable", "up" ]
 
 # Booking service
   booking_db:
@@ -81,13 +81,16 @@ services:
     ports:
       - "5434:5432"
     
-  bookingservice:
+  booking_service:
     build:
       context: ./book-service
     image: railway/booking-service:1.0-SNAPSHOT
     depends_on:
+      # - booking_db
+      # - train_service
       booking_db:
-          condition: service_healthy
+        condition: service_healthy
+      # train_service
     environment:
         DB_URL: jdbc:postgresql://booking_db:5432/bookingdb?sslmode=disable
         DB_USERNAME: root
@@ -96,31 +99,31 @@ services:
     ports:
       - "8082:8080"
 
-# Payment service
-  payment_db:
-    image: postgres:16
-    environment:
-      POSTGRES_DB: paymentdb
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: password
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - "5435:5432"
+# # Payment service
+#   payment_db:
+#     image: postgres:16
+#     environment:
+#       POSTGRES_DB: paymentdb
+#       POSTGRES_USER: root
+#       POSTGRES_PASSWORD: password
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -U postgres"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#     ports:
+#       - "5435:5432"
 
-  payment_service:
-    build:
-      context: ./payment-service
-    image: railway/payment-service:1.0-SNAPSHOT
-    depends_on:
-      payment_db:
-          condition: service_healthy
-    environment:
-      DB_URL: jdbc:postgresql://payment_db:5432/paymentdb?sslmode=disable
-      DB_USERNAME: root
-      DB_PASSWORD: password
-    ports:
-      - "8083:8080"
+#   payment_service:
+#     build:
+#       context: ./payment-service
+#     image: railway/payment-service:1.0-SNAPSHOT
+#     depends_on:
+#       payment_db:
+#           condition: service_healthy
+#     environment:
+#       DB_URL: jdbc:postgresql://payment_db:5432/paymentdb?sslmode=disable
+#       DB_USERNAME: root
+#       DB_PASSWORD: password
+#     ports:
+#       - "8083:8080"

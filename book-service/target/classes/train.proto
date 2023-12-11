@@ -1,0 +1,14 @@
+syntax = "proto3";
+package train;
+
+message CheckSeatAvailabilityAndReserveRequest {
+    uint64 seat_id = 1;
+  }
+
+message CheckSeatAvailabilityAndReserveResponse {
+    uint64 seat_id =1;
+}
+
+service SeatReservation {
+    rpc CheckSeatAvailabilityAndReserve (CheckSeatAvailabilityAndReserveRequest) returns (CheckSeatAvailabilityAndReserveResponse);
+}
