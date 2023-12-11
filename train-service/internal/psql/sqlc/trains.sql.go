@@ -153,8 +153,10 @@ func (q *Queries) GetTrains(ctx context.Context, arg GetTrainsParams) ([]Train, 
 const getTrainsWithAvailableSeats = `-- name: GetTrainsWithAvailableSeats :many
 SELECT DISTINCT t.train_id,
                 t.train_name,
-                ss.station_name,
-                fs.station_name,
+                ss.station_id AS start_station_id,
+                ss.station_name AS start_station_name,
+                fs.station_id AS finish_station_id,
+                fs.station_name AS finish_station_name,
                 t.arrival_time,
                 t.departure_time
 FROM trains t
@@ -175,12 +177,14 @@ type GetTrainsWithAvailableSeatsParams struct {
 }
 
 type GetTrainsWithAvailableSeatsRow struct {
-	TrainID       int64     `json:"train_id"`
-	TrainName     string    `json:"train_name"`
-	StationName   string    `json:"station_name"`
-	StationName_2 string    `json:"station_name_2"`
-	ArrivalTime   time.Time `json:"arrival_time"`
-	DepartureTime time.Time `json:"departure_time"`
+	TrainID           int64     `json:"train_id"`
+	TrainName         string    `json:"train_name"`
+	StartStationID    int32     `json:"start_station_id"`
+	StartStationName  string    `json:"start_station_name"`
+	FinishStationID   int32     `json:"finish_station_id"`
+	FinishStationName string    `json:"finish_station_name"`
+	ArrivalTime       time.Time `json:"arrival_time"`
+	DepartureTime     time.Time `json:"departure_time"`
 }
 
 func (q *Queries) GetTrainsWithAvailableSeats(ctx context.Context, arg GetTrainsWithAvailableSeatsParams) ([]GetTrainsWithAvailableSeatsRow, error) {
@@ -195,8 +199,74 @@ func (q *Queries) GetTrainsWithAvailableSeats(ctx context.Context, arg GetTrains
 		if err := rows.Scan(
 			&i.TrainID,
 			&i.TrainName,
-			&i.StationName,
-			&i.StationName_2,
+			&i.StartStationID,
+			&i.StartStationName,
+			&i.FinishStationID,
+			&i.FinishStationName,
+			&i.ArrivalTime,
+			&i.DepartureTime,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
+const getTrainsWithStations = `-- name: GetTrainsWithStations :many
+SELECT DISTINCT t.train_id,
+                t.train_name,
+                ss.station_id AS start_station_id,
+                ss.station_name AS start_station_name,
+                fs.station_id AS finish_station_id,
+                fs.station_name AS finish_station_name,
+                t.arrival_time,
+                t.departure_time
+    FROM trains t
+    JOIN stations ss ON t.start_station_id = ss.station_id
+    JOIN stations fs ON t.finish_station_id = fs.station_id
+    LIMIT $1
+    OFFSET $2
+`
+
+type GetTrainsWithStationsParams struct {
+	Limit  int32 `json:"limit"`
+	Offset int32 `json:"offset"`
+}
+
+type GetTrainsWithStationsRow struct {
+	TrainID           int64     `json:"train_id"`
+	TrainName         string    `json:"train_name"`
+	StartStationID    int32     `json:"start_station_id"`
+	StartStationName  string    `json:"start_station_name"`
+	FinishStationID   int32     `json:"finish_station_id"`
+	FinishStationName string    `json:"finish_station_name"`
+	ArrivalTime       time.Time `json:"arrival_time"`
+	DepartureTime     time.Time `json:"departure_time"`
+}
+
+func (q *Queries) GetTrainsWithStations(ctx context.Context, arg GetTrainsWithStationsParams) ([]GetTrainsWithStationsRow, error) {
+	rows, err := q.db.QueryContext(ctx, getTrainsWithStations, arg.Limit, arg.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	items := []GetTrainsWithStationsRow{}
+	for rows.Next() {
+		var i GetTrainsWithStationsRow
+		if err := rows.Scan(
+			&i.TrainID,
+			&i.TrainName,
+			&i.StartStationID,
+			&i.StartStationName,
+			&i.FinishStationID,
+			&i.FinishStationName,
 			&i.ArrivalTime,
 			&i.DepartureTime,
 		); err != nil {

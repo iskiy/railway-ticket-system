@@ -9,7 +9,11 @@ import (
 )
 
 type TrainManagerHandler struct {
-	repo *sqlc.Queries
+	Repo *sqlc.Queries
+}
+
+func New(repo *sqlc.Queries) *TrainManagerHandler {
+	return &TrainManagerHandler{Repo: repo}
 }
 
 type CreateStationRequest struct {
@@ -27,7 +31,7 @@ func (t *TrainManagerHandler) CreateStation(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	stationID, err := t.repo.CreateStation(c.Context(), req.StationName)
+	stationID, err := t.Repo.CreateStation(c.Context(), req.StationName)
 	if err != nil {
 		return err
 	}
@@ -43,7 +47,7 @@ func (t *TrainManagerHandler) DeleteStation(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "bad station id")
 	}
-	err = t.repo.DeleteStation(c.Context(), int32(id))
+	err = t.Repo.DeleteStation(c.Context(), int32(id))
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "delete station error")
 	}
@@ -51,18 +55,68 @@ func (t *TrainManagerHandler) DeleteStation(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+func (t *TrainManagerHandler) GetStation(c *fiber.Ctx) error {
+	idParam := c.Params("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad station id")
+	}
+
+	station, err := t.Repo.GetStation(c.Context(), int32(id))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "get station error")
+	}
+
+	return c.Status(fiber.StatusOK).JSON(station)
+}
+
+func (t *TrainManagerHandler) GetStations(c *fiber.Ctx) error {
+	limitParam := c.Query("limit")
+	limit, err := strconv.Atoi(limitParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad limit param")
+	}
+
+	offsetParam := c.Query("offset")
+	offset, err := strconv.Atoi(offsetParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad offset param")
+	}
+
+	stations, err := t.Repo.GetStations(c.Context(), sqlc.GetStationsParams{
+		Limit:  int32(limit),
+		Offset: int32(offset),
+	})
+
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "get station error")
+	}
+
+	return c.Status(fiber.StatusOK).JSON(stations)
+}
+
 type CreateTrainResponse struct {
 	TrainID int64 `json:"train_id"`
 }
 
 func (t *TrainManagerHandler) CreateTrain(c *fiber.Ctx) error {
+	isFullInfoParam := c.Query("is_full")
+
+	isFullInfo, err := strconv.ParseBool(isFullInfoParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad full info query param")
+	}
+	if isFullInfo {
+		return t.CreateTrainWithFullInfo(c)
+	}
+
 	req := sqlc.CreateTrainParams{}
-	err := c.BodyParser(&req)
+	err = c.BodyParser(&req)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trainID, err := t.repo.CreateTrain(c.Context(), req)
+	trainID, err := t.Repo.CreateTrain(c.Context(), req)
 	if err != nil {
 		return err
 	}
@@ -78,7 +132,7 @@ func (t *TrainManagerHandler) DeleteTrain(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "bad train id")
 	}
-	err = t.repo.DeleteTrain(c.Context(), int64(id))
+	err = t.Repo.DeleteTrain(c.Context(), int64(id))
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "delete train error")
 	}
@@ -97,7 +151,7 @@ func (t *TrainManagerHandler) CreateCar(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trainID, err := t.repo.CreateCar(c.Context(), req)
+	trainID, err := t.Repo.CreateCar(c.Context(), req)
 	if err != nil {
 		return err
 	}
@@ -107,13 +161,42 @@ func (t *TrainManagerHandler) CreateCar(c *fiber.Ctx) error {
 	})
 }
 
+func (t *TrainManagerHandler) GetTrainCars(c *fiber.Ctx) error {
+	idParam := c.Params("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad train id")
+	}
+
+	cars, err := t.Repo.GetTrainCars(c.Context(), int64(id))
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad cars id")
+	}
+	return c.Status(fiber.StatusOK).JSON(cars)
+}
+
+func (t *TrainManagerHandler) GetCar(c *fiber.Ctx) error {
+	idParam := c.Params("id")
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad car id")
+	}
+
+	car, err := t.Repo.GetCar(c.Context(), int64(id))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "get car error")
+	}
+
+	return c.Status(fiber.StatusOK).JSON(car)
+}
+
 func (t *TrainManagerHandler) DeleteCar(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	id, err := strconv.Atoi(idParam)
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "bad car id")
 	}
-	err = t.repo.DeleteCar(c.Context(), int64(id))
+	err = t.Repo.DeleteCar(c.Context(), int64(id))
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "delete car error")
 	}
@@ -132,7 +215,7 @@ func (t *TrainManagerHandler) CreateSeat(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trainID, err := t.repo.CreateSeat(c.Context(), req)
+	trainID, err := t.Repo.CreateSeat(c.Context(), req)
 	if err != nil {
 		return err
 	}
@@ -148,7 +231,7 @@ func (t *TrainManagerHandler) DeleteSeat(c *fiber.Ctx) error {
 	if err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, "bad seat id")
 	}
-	err = t.repo.DeleteSeat(c.Context(), int64(id))
+	err = t.Repo.DeleteSeat(c.Context(), int64(id))
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "delete seat error")
 	}
@@ -168,7 +251,7 @@ func (t *TrainManagerHandler) GetTrainIDsWithAvailableSeats(c *fiber.Ctx) error 
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trainIDs, err := t.repo.GetTrainIDsWithAvailableSeats(c.Context(), req)
+	trainIDs, err := t.Repo.GetTrainIDsWithAvailableSeats(c.Context(), req)
 	if err != nil {
 		return err
 	}
@@ -183,13 +266,13 @@ type GetTrainsWithAvailableSeatsResponse struct {
 }
 
 type TrainFullInfo struct {
-	TrainID       int64     `json:"train_id,omitempty"`
-	TrainName     string    `json:"train_name"`
-	StartStation  string    `json:"start_station"`
-	DepartureTime time.Time `json:"departure_time"`
-	FinishStation string    `json:"finish_station"`
-	ArrivalTime   time.Time `json:"arrival_time"`
-	Cars          []Car     `json:"cars"`
+	TrainID       int64        `json:"train_id,omitempty"`
+	TrainName     string       `json:"train_name"`
+	StartStation  sqlc.Station `json:"start_station"`
+	DepartureTime time.Time    `json:"departure_time"`
+	FinishStation sqlc.Station `json:"finish_station"`
+	ArrivalTime   time.Time    `json:"arrival_time"`
+	Cars          []Car        `json:"cars"`
 }
 
 type Car struct {
@@ -203,6 +286,87 @@ type Seat struct {
 	SeatNumber  string `json:"seat_number"`
 	IsAvailable bool   `json:"is_available"`
 	Price       int    `json:"price"`
+}
+
+func (t *TrainManagerHandler) GetTrains(c *fiber.Ctx) error {
+	limitParam := c.Query("limit")
+	limit, err := strconv.Atoi(limitParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad limit param")
+	}
+
+	offsetParam := c.Query("offset")
+	offset, err := strconv.Atoi(offsetParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad offset param")
+	}
+
+	isFullInfoParam := c.Query("is_full")
+	isFullInfo, err := strconv.ParseBool(isFullInfoParam)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad full info query param")
+	}
+
+	trains, err := t.Repo.GetTrainsWithStations(c.Context(), sqlc.GetTrainsWithStationsParams{
+		Limit:  int32(limit),
+		Offset: int32(offset),
+	})
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "get trains error")
+	}
+
+	if isFullInfo {
+		return t.getTrainsFullInfo(c, trains)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(trains)
+}
+
+func (t *TrainManagerHandler) getTrainsFullInfo(c *fiber.Ctx, trains []sqlc.GetTrainsWithStationsRow) error {
+	trainFullInfos := make([]TrainFullInfo, len(trains))
+	for k, train := range trains {
+		trainFullInfo := TrainFullInfo{
+			TrainID:   train.TrainID,
+			TrainName: train.TrainName,
+			StartStation: sqlc.Station{
+				StationID:   train.StartStationID,
+				StationName: train.FinishStationName,
+			},
+			FinishStation: sqlc.Station{
+				StationID:   train.FinishStationID,
+				StationName: train.FinishStationName,
+			},
+			DepartureTime: train.DepartureTime,
+			ArrivalTime:   train.ArrivalTime,
+		}
+
+		cars, err := t.Repo.GetTrainCars(c.Context(), train.TrainID)
+		if err != nil {
+			return fiber.NewError(fiber.StatusInternalServerError, "get cars from db error")
+		}
+
+		trainFullInfo.Cars = make([]Car, len(cars))
+
+		for i, car := range cars {
+			trainFullInfo.Cars[i].CarID = car.CarID
+			trainFullInfo.Cars[i].CarType = car.CarType
+
+			seats, err := t.Repo.GetSeatsByCar(c.Context(), car.CarID)
+			if err != nil {
+				return fiber.NewError(fiber.StatusInternalServerError, "get cars from db error")
+			}
+			trainFullInfo.Cars[i].Seats = make([]Seat, len(seats))
+			for j, seat := range seats {
+				trainFullInfo.Cars[i].Seats[j].SeatID = seat.SeatID
+				trainFullInfo.Cars[i].Seats[j].IsAvailable = seat.IsAvailable
+				trainFullInfo.Cars[i].Seats[j].SeatNumber = seat.SeatNumber
+				trainFullInfo.Cars[i].Seats[j].Price = int(seat.Price)
+			}
+		}
+		trainFullInfos[k] = trainFullInfo
+	}
+
+	return c.Status(fiber.StatusOK).JSON(trainFullInfos)
 }
 
 func (t *TrainManagerHandler) GetTrainsWithAvailableSeats(c *fiber.Ctx) error {
@@ -237,52 +401,20 @@ func (t *TrainManagerHandler) GetTrainsWithAvailableSeats(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trains, err := t.repo.GetTrainsWithAvailableSeats(c.Context(), req)
+	trains, err := t.Repo.GetTrainsWithAvailableSeats(c.Context(), req)
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "get train from db error")
 	}
-	trainFullInfos := make([]TrainFullInfo, len(trains))
 
-	for k, train := range trains {
-		trainFullInfo := TrainFullInfo{
-			TrainID:       train.TrainID,
-			TrainName:     train.TrainName,
-			StartStation:  train.StationName,
-			FinishStation: train.StationName_2,
-			DepartureTime: train.DepartureTime,
-			ArrivalTime:   train.ArrivalTime,
-		}
+	return t.getTrainsFullInfo(c, convertToTrainsWithStation(trains))
+}
 
-		cars, err := t.repo.GetTrainCars(c.Context(), train.TrainID)
-		if err != nil {
-			return fiber.NewError(fiber.StatusInternalServerError, "get cars from db error")
-		}
-
-		trainFullInfo.Cars = make([]Car, len(cars))
-
-		for i, car := range cars {
-			trainFullInfo.Cars[i].CarID = car.CarID
-			trainFullInfo.Cars[i].CarType = car.CarType
-
-			seats, err := t.repo.GetSeatsByCar(c.Context(), car.CarID)
-			if err != nil {
-				return fiber.NewError(fiber.StatusInternalServerError, "get cars from db error")
-			}
-			trainFullInfo.Cars[i].Seats = make([]Seat, len(seats))
-			for j, seat := range seats {
-				trainFullInfo.Cars[i].Seats[j].SeatID = seat.SeatID
-				trainFullInfo.Cars[i].Seats[j].IsAvailable = seat.IsAvailable
-				trainFullInfo.Cars[i].Seats[j].SeatNumber = seat.SeatNumber
-				trainFullInfo.Cars[i].Seats[j].Price = int(seat.Price)
-			}
-		}
-
-		trainFullInfos[k] = trainFullInfo
+func convertToTrainsWithStation(row []sqlc.GetTrainsWithAvailableSeatsRow) []sqlc.GetTrainsWithStationsRow {
+	trainsWithStation := make([]sqlc.GetTrainsWithStationsRow, len(row))
+	for i, r := range row {
+		trainsWithStation[i] = sqlc.GetTrainsWithStationsRow(r)
 	}
-
-	return c.Status(fiber.StatusOK).JSON(GetTrainsWithAvailableSeatsResponse{
-		TrainFullInfo: trainFullInfos,
-	})
+	return trainsWithStation
 }
 
 type CreateTrainWithFullInfoRequest struct {
@@ -302,7 +434,7 @@ func (t *TrainManagerHandler) CreateTrainWithFullInfo(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusBadRequest, "parse body error")
 	}
 
-	trainID, err := t.repo.CreateTrain(c.Context(), sqlc.CreateTrainParams{
+	trainID, err := t.Repo.CreateTrain(c.Context(), sqlc.CreateTrainParams{
 		TrainName:       req.TrainName,
 		StartStationID:  req.StartStation,
 		DepartureTime:   req.DepartureTime,
@@ -314,7 +446,7 @@ func (t *TrainManagerHandler) CreateTrainWithFullInfo(c *fiber.Ctx) error {
 	}
 	req.TrainID = trainID
 	for i, car := range req.Cars {
-		carID, err := t.repo.CreateCar(c.Context(), sqlc.CreateCarParams{
+		carID, err := t.Repo.CreateCar(c.Context(), sqlc.CreateCarParams{
 			CarType: car.CarType,
 			TrainID: trainID,
 		})
@@ -323,7 +455,7 @@ func (t *TrainManagerHandler) CreateTrainWithFullInfo(c *fiber.Ctx) error {
 		}
 		req.Cars[i].CarID = carID
 		for j, seat := range req.Cars[i].Seats {
-			seatID, err := t.repo.CreateSeat(c.Context(), sqlc.CreateSeatParams{
+			seatID, err := t.Repo.CreateSeat(c.Context(), sqlc.CreateSeatParams{
 				CarID:       carID,
 				SeatNumber:  seat.SeatNumber,
 				IsAvailable: false,

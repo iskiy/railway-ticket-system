@@ -10,5 +10,24 @@ services:
     ports:
       - "5433:5432"
 
+  train_service:
+    build: .
+    depends_on:
+      train_postgres:
+        condition: service_healthy
+    environment:
+      - POSTGRES_CONN=postgresql://root:password@localhost:5433/traindb?sslmode=disable
+      - PORT=8081
+    ports:
+      - 8081:8081
+  migrate:
+    image: migrate/migrate
+    depends_on:
+      - train_postgres
+    volumes:
+      - ./migrations:/migrations
+    command: [ "-path", "/migrations", "-database", "postgresql://root:password@train_postgres:5432/traindb?sslmode=disable", "up" ]
+
+
 volumes:
   postgres_data:

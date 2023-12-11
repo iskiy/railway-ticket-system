@@ -13,6 +13,21 @@ SELECT * FROM trains
 LIMIT $1
 OFFSET $2;
 
+-- name: GetTrainsWithStations :many
+SELECT DISTINCT t.train_id,
+                t.train_name,
+                ss.station_id AS start_station_id,
+                ss.station_name AS start_station_name,
+                fs.station_id AS finish_station_id,
+                fs.station_name AS finish_station_name,
+                t.arrival_time,
+                t.departure_time
+    FROM trains t
+    JOIN stations ss ON t.start_station_id = ss.station_id
+    JOIN stations fs ON t.finish_station_id = fs.station_id
+    LIMIT $1
+    OFFSET $2;
+
 -- name: UpdateTrain :exec
 UPDATE trains
 SET train_name = $2, start_station_id = $3, departure_time = $4, finish_station_id = $5, arrival_time = $6
@@ -38,8 +53,10 @@ WHERE ss.station_name = $1
 -- name: GetTrainsWithAvailableSeats :many
 SELECT DISTINCT t.train_id,
                 t.train_name,
-                ss.station_name,
-                fs.station_name,
+                ss.station_id AS start_station_id,
+                ss.station_name AS start_station_name,
+                fs.station_id AS finish_station_id,
+                fs.station_name AS finish_station_name,
                 t.arrival_time,
                 t.departure_time
 FROM trains t
