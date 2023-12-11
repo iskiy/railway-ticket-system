@@ -95,6 +95,25 @@ public class PaymentController {
         );
     }
 
+    @RequestMapping(value = "/payment/all", method = RequestMethod.GET)
+    public ResponseEntity<String> getAllPayment()
+            throws JsonProcessingException {
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        paymentService.findAllPayments()
+                                .stream().map(
+                                        paymentEntity -> new PaymentDTO(
+                                                paymentEntity.getPaymentId(),
+                                                paymentEntity.getAmount(),
+                                                paymentEntity.getPaymentTimestamp(),
+                                                paymentEntity.getMethod(),
+                                                paymentEntity.getStatus()
+                                        )
+                                ).toList()
+                )
+        );
+    }
+
     @RequestMapping(value = "/payment/timestamp_date", method = RequestMethod.GET)
     public ResponseEntity<String> getPaymentByTimestamp_Date(@RequestBody final int timestamp_date) throws JsonProcessingException {
         return ResponseEntity.ok(
@@ -117,7 +136,7 @@ public class PaymentController {
     public ResponseEntity<String> getPaymentByTimestamp_Year(@RequestBody final int timestamp_year) throws JsonProcessingException {
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp_Date(timestamp_year)
+                        paymentService.findAllByPaymentTimestamp_Year(timestamp_year)
                                 .stream().map(
                                         paymentEntity -> new PaymentDTO(
                                                 paymentEntity.getPaymentId(),
@@ -135,7 +154,7 @@ public class PaymentController {
     public ResponseEntity<String> getPaymentByTimestamp_Month(@RequestBody final int timestamp_month) throws JsonProcessingException {
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp_Date(timestamp_month)
+                        paymentService.findAllByPaymentTimestamp_Month(timestamp_month)
                                 .stream().map(
                                         paymentEntity -> new PaymentDTO(
                                                 paymentEntity.getPaymentId(),
