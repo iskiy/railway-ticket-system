@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -64,7 +65,7 @@ func (t *TrainManagerHandler) GetStation(c *fiber.Ctx) error {
 
 	station, err := t.Repo.GetStation(c.Context(), int32(id))
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "get station error")
+		return fiber.NewError(fiber.StatusInternalServerError, fmt.Sprintf("get station error: %v", err))
 	}
 
 	return c.Status(fiber.StatusOK).JSON(station)
@@ -89,7 +90,7 @@ func (t *TrainManagerHandler) GetStations(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "get station error")
+		return fiber.NewError(fiber.StatusInternalServerError, fmt.Sprintf("get stations error: %v", err))
 	}
 
 	return c.Status(fiber.StatusOK).JSON(stations)
@@ -442,7 +443,7 @@ func (t *TrainManagerHandler) CreateTrainWithFullInfo(c *fiber.Ctx) error {
 		ArrivalTime:     req.ArrivalTime,
 	})
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, "create train error")
+		return fiber.NewError(fiber.StatusInternalServerError, fmt.Sprintf("create train error: %v", err))
 	}
 	req.TrainID = trainID
 	for i, car := range req.Cars {
