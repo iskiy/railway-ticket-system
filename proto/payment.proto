@@ -1,0 +1,34 @@
+syntax = "proto3";
+package payment;
+
+import "google/protobuf/empty.proto";
+
+service PaymentService {
+  rpc AddPayment(PaymentRequest) returns (PaymentResponse);
+  rpc GetAllPayments(google.protobuf.Empty) returns (AllPaymentResponse);
+  rpc GetPaymentById(PaymentIdRequest) returns (PaymentResponse);
+  rpc SimulatePayment(PaymentRequest) returns (PaymentResponse);
+}
+
+message PaymentIdRequest {
+  uint32 payment_id = 1;
+}
+
+message AllPaymentResponse {
+  repeated PaymentResponse payment = 1;
+}
+
+message PaymentResponse {
+  uint32 payment_id = 1;
+  uint32 amount = 2;
+  string payment_timestamp = 3;
+  string method = 4;
+  string status = 5;
+}
+
+message PaymentRequest {
+  uint32 amount = 1;
+  string payment_timestamp = 2;
+  string method = 3;
+  string status = 4;
+}

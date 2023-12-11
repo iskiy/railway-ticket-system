@@ -1,0 +1,50 @@
+syntax = "proto3";
+package booking;
+
+import "google/protobuf/empty.proto";
+
+service BookingService {
+  rpc AddBooking(BookingRequest) returns (BookingResponse);
+  rpc EditBooking(BookingRequest) returns (BookingResponse);
+  rpc Book(BookingRequest) returns (BookingResponse);
+  rpc DeleteBooking(BookingIdRequest) returns (google.protobuf.Empty);
+  rpc GetBookingBySeat(GetBookingBySeatRequest) returns (BookingResponse);
+  rpc GetAllBookings(google.protobuf.Empty) returns (AllBookingResponse);
+  rpc GetBookingById(BookingIdRequest) returns (BookingResponse);
+  rpc IsBooked(GetBookingBySeatRequest) returns (IsBookedResponse);
+}
+
+message GetBookingBySeatRequest {
+  uint32 seat_id = 1;
+}
+
+message AllBookingResponse {
+  repeated BookingResponse booking = 1;
+}
+
+message BookingIdRequest {
+  uint32 booking_id = 1;
+}
+
+message IsBookedResponse {
+  bool is_booked = 1;
+}
+
+message BookingResponse {
+  uint32 booking_id = 1;
+  string user_email = 2;
+  uint32 seat_id = 3;
+  uint32 carriage_id = 4;
+  uint32 train_id = 5;
+  string booking_date = 6;
+  uint32 status = 7;
+}
+
+message BookingRequest {
+  string user_email = 1;
+  uint32 seat_id = 2;
+  uint32 carriage_id = 3;
+  uint32 train_id = 4;
+  string booking_date = 5;
+  uint32 status = 6;
+}
