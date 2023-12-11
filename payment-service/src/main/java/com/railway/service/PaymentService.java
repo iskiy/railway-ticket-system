@@ -62,24 +62,24 @@ public class PaymentService {
         return paymentRepository.findAllByAmountIsBetween(startAmount, endAmount);
     }
 
-    @Transactional
-    public List<PaymentEntity> findAllByPaymentTimestamp(Timestamp timestamp) {
-        return paymentRepository.findAllByPaymentTimestamp(timestamp);
-    }
+    // @Transactional
+    // public List<PaymentEntity> findAllByPaymentTimestamp(Timestamp timestamp) {
+    //     return paymentRepository.findAllByPaymentTimestamp(timestamp);
+    // }
 
-    @Transactional
-    public List<PaymentEntity> findAllByPaymentTimestamp_Date(int paymentTimestamp_date) {
-        return paymentRepository.findAllByPaymentTimestamp_Date(paymentTimestamp_date);
-    }
+    // @Transactional
+    // public List<PaymentEntity> findAllByPaymentTimestamp_Date(int paymentTimestamp_date) {
+    //     return paymentRepository.findAllByPaymentTimestamp_Date(paymentTimestamp_date);
+    // }
 
-    @Transactional
-    public List<PaymentEntity> findAllByPaymentTimestamp_Year(int paymentTimestamp_year) {
-        return paymentRepository.findAllByPaymentTimestamp_Year(paymentTimestamp_year);
-    }
+    // @Transactional
+    // public List<PaymentEntity> findAllByPaymentTimestamp_Year(int paymentTimestamp_year) {
+    //     return paymentRepository.findAllByPaymentTimestamp_Year(paymentTimestamp_year);
+    // }
 
-    @Transactional
-    public List<PaymentEntity> findAllByPaymentTimestamp_Month(int paymentTimestamp_month) {
-        return paymentRepository.findAllByPaymentTimestamp_Month(paymentTimestamp_month);
-    }
+    // @Transactional
+    // public List<PaymentEntity> findAllByPaymentTimestamp_Month(int paymentTimestamp_month) {
+    //     return paymentRepository.findAllByPaymentTimestamp_Month(paymentTimestamp_month);
+    // }
 
 }

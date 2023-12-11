@@ -11,7 +11,7 @@
     </parent>
 
     <groupId>com.railway</groupId>
-    <artifactId>book-service</artifactId>
+    <artifactId>booking-service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>Booking service</name>
 

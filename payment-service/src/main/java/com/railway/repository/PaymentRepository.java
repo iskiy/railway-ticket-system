@@ -18,11 +18,11 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, Long> {
 
     List<PaymentEntity> findAllByAmountIsBetween(Long startAmount, Long endAmount);
 
-    List<PaymentEntity> findAllByPaymentTimestamp(Timestamp timestamp);
+    // List<PaymentEntity> findAllByPaymentTimestamp(Timestamp timestamp);
 
-    List<PaymentEntity> findAllByPaymentTimestamp_Date(int paymentTimestamp_date);
+    // List<PaymentEntity> findAllByPaymentTimestamp_Date(int paymentTimestamp_date);
 
-    List<PaymentEntity> findAllByPaymentTimestamp_Year(int paymentTimestamp_year);
+    // List<PaymentEntity> findAllByPaymentTimestamp_Year(int paymentTimestamp_year);
 
-    List<PaymentEntity> findAllByPaymentTimestamp_Month(int paymentTimestamp_month);
+    // List<PaymentEntity> findAllByPaymentTimestamp_Month(int paymentTimestamp_month);
 }

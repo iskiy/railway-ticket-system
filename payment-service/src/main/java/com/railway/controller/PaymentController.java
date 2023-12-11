@@ -77,23 +77,23 @@ public class PaymentController {
         );
     }
 
-    @RequestMapping(value = "/payment/timestamp", method = RequestMethod.GET)
-    public ResponseEntity<String> getPaymentByTimestamp(@RequestBody final Timestamp timestamp) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp(timestamp)
-                                .stream().map(
-                                        paymentEntity -> new PaymentDTO(
-                                                paymentEntity.getPaymentId(),
-                                                paymentEntity.getAmount(),
-                                                paymentEntity.getPaymentTimestamp(),
-                                                paymentEntity.getMethod(),
-                                                paymentEntity.getStatus()
-                                                )
-                                ).toList()
-                )
-        );
-    }
+//     @RequestMapping(value = "/payment/timestamp", method = RequestMethod.GET)
+//     public ResponseEntity<String> getPaymentByTimestamp(@RequestBody final Timestamp timestamp) throws JsonProcessingException {
+//         return ResponseEntity.ok(
+//                 objectMapper.writeValueAsString(
+//                         paymentService.findAllByPaymentTimestamp(timestamp)
+//                                 .stream().map(
+//                                         paymentEntity -> new PaymentDTO(
+//                                                 paymentEntity.getPaymentId(),
+//                                                 paymentEntity.getAmount(),
+//                                                 paymentEntity.getPaymentTimestamp(),
+//                                                 paymentEntity.getMethod(),
+//                                                 paymentEntity.getStatus()
+//                                                 )
+//                                 ).toList()
+//                 )
+//         );
+//     }
 
     @RequestMapping(value = "/payment/all", method = RequestMethod.GET)
     public ResponseEntity<String> getAllPayment()
@@ -114,59 +114,59 @@ public class PaymentController {
         );
     }
 
-    @RequestMapping(value = "/payment/timestamp_date", method = RequestMethod.GET)
-    public ResponseEntity<String> getPaymentByTimestamp_Date(@RequestBody final int timestamp_date) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp_Date(timestamp_date)
-                                .stream().map(
-                                        paymentEntity -> new PaymentDTO(
-                                                paymentEntity.getPaymentId(),
-                                                paymentEntity.getAmount(),
-                                                paymentEntity.getPaymentTimestamp(),
-                                                paymentEntity.getMethod(),
-                                                paymentEntity.getStatus()
-                                                )
-                                ).toList()
-                )
-        );
-    }
+//     @RequestMapping(value = "/payment/timestamp_date", method = RequestMethod.GET)
+//     public ResponseEntity<String> getPaymentByTimestamp_Date(@RequestBody final int timestamp_date) throws JsonProcessingException {
+//         return ResponseEntity.ok(
+//                 objectMapper.writeValueAsString(
+//                         paymentService.findAllByPaymentTimestamp_Date(timestamp_date)
+//                                 .stream().map(
+//                                         paymentEntity -> new PaymentDTO(
+//                                                 paymentEntity.getPaymentId(),
+//                                                 paymentEntity.getAmount(),
+//                                                 paymentEntity.getPaymentTimestamp(),
+//                                                 paymentEntity.getMethod(),
+//                                                 paymentEntity.getStatus()
+//                                                 )
+//                                 ).toList()
+//                 )
+//         );
+//     }
 
-    @RequestMapping(value = "/payment/timestamp_year", method = RequestMethod.GET)
-    public ResponseEntity<String> getPaymentByTimestamp_Year(@RequestBody final int timestamp_year) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp_Year(timestamp_year)
-                                .stream().map(
-                                        paymentEntity -> new PaymentDTO(
-                                                paymentEntity.getPaymentId(),
-                                                paymentEntity.getAmount(),
-                                                paymentEntity.getPaymentTimestamp(),
-                                                paymentEntity.getMethod(),
-                                                paymentEntity.getStatus()
-                                                )
-                                ).toList()
-                )
-        );
-    }
+//     @RequestMapping(value = "/payment/timestamp_year", method = RequestMethod.GET)
+//     public ResponseEntity<String> getPaymentByTimestamp_Year(@RequestBody final int timestamp_year) throws JsonProcessingException {
+//         return ResponseEntity.ok(
+//                 objectMapper.writeValueAsString(
+//                         paymentService.findAllByPaymentTimestamp_Year(timestamp_year)
+//                                 .stream().map(
+//                                         paymentEntity -> new PaymentDTO(
+//                                                 paymentEntity.getPaymentId(),
+//                                                 paymentEntity.getAmount(),
+//                                                 paymentEntity.getPaymentTimestamp(),
+//                                                 paymentEntity.getMethod(),
+//                                                 paymentEntity.getStatus()
+//                                                 )
+//                                 ).toList()
+//                 )
+//         );
+//     }
 
-    @RequestMapping(value = "/payment/timestamp_month", method = RequestMethod.GET)
-    public ResponseEntity<String> getPaymentByTimestamp_Month(@RequestBody final int timestamp_month) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        paymentService.findAllByPaymentTimestamp_Month(timestamp_month)
-                                .stream().map(
-                                        paymentEntity -> new PaymentDTO(
-                                                paymentEntity.getPaymentId(),
-                                                paymentEntity.getAmount(),
-                                                paymentEntity.getPaymentTimestamp(),
-                                                paymentEntity.getMethod(),
-                                                paymentEntity.getStatus()
-                                                )
-                                ).toList()
-                )
-        );
-    }
+//     @RequestMapping(value = "/payment/timestamp_month", method = RequestMethod.GET)
+//     public ResponseEntity<String> getPaymentByTimestamp_Month(@RequestBody final int timestamp_month) throws JsonProcessingException {
+//         return ResponseEntity.ok(
+//                 objectMapper.writeValueAsString(
+//                         paymentService.findAllByPaymentTimestamp_Month(timestamp_month)
+//                                 .stream().map(
+//                                         paymentEntity -> new PaymentDTO(
+//                                                 paymentEntity.getPaymentId(),
+//                                                 paymentEntity.getAmount(),
+//                                                 paymentEntity.getPaymentTimestamp(),
+//                                                 paymentEntity.getMethod(),
+//                                                 paymentEntity.getStatus()
+//                                                 )
+//                                 ).toList()
+//                 )
+//         );
+//     }
 
     @RequestMapping(value = "/payment", method = RequestMethod.POST)
     public ResponseEntity<String> addPayment(@RequestBody final PaymentDTO paymentDTO) throws JsonProcessingException {
