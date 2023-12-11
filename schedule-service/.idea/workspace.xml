@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a42a104d-ef37-45f6-8e6c-ae085a6e7ced" name="Changes" comment="ticket service">
-      <change beforePath="$PROJECT_DIR$/../.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="a42a104d-ef37-45f6-8e6c-ae085a6e7ced" name="Changes" comment="ticket service refactoring">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/railway/model/TicketEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/railway/model/TicketEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/railway/service/TicketService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/railway/service/TicketService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +135,7 @@
       <updated>1702213529613</updated>
       <workItem from="1702213538978" duration="12271000" />
       <workItem from="1702230833471" duration="1576000" />
-      <workItem from="1702233494570" duration="9079000" />
+      <workItem from="1702233494570" duration="10008000" />
     </task>
     <task id="LOCAL-00001" summary="ticket service">
       <created>1702230041526</created>
@@ -170,7 +165,14 @@
       <option name="project" value="LOCAL" />
       <updated>1702238851415</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="ticket service refactoring">
+      <created>1702244485642</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1702244485642</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -191,6 +193,7 @@
     <MESSAGE value="ticket service properties" />
     <MESSAGE value="ticket service docker-compose" />
     <MESSAGE value="ticket service" />
-    <option name="LAST_COMMIT_MESSAGE" value="ticket service" />
+    <MESSAGE value="ticket service refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="ticket service refactoring" />
   </component>
 </project>
