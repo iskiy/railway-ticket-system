@@ -132,7 +132,7 @@ public class TicketController {
         );
     }
 
-    @RequestMapping(value = "/ticket/arrival_departure_stations", method = RequestMethod.GET)
+    @RequestMapping(value = "/ticket/arrival_departure_stations_journey", method = RequestMethod.GET)
     public ResponseEntity<String> getTicketsByArrivalStationAndDepartureStationAndJourneyDate(
             @RequestBody final TicketScheduleDTO scheduleDTO)
             throws JsonProcessingException {
