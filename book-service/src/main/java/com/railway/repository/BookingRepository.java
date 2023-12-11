@@ -16,9 +16,9 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     Optional<BookingEntity> findBySeatId(Long seatId);
 
-    List<BookingEntity> findAllByCarriageId(Long carriageId);
-
-    List<BookingEntity> findAllByTrainId(Long trainId);
+//    List<BookingEntity> findAllByCarriageId(Long carriageId);
+//
+//    List<BookingEntity> findAllByTrainId(Long trainId);
 
     List<BookingEntity> findAllByBookingDate(Timestamp timestamp);
 

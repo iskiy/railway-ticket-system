@@ -12,55 +12,54 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Book;
 import java.sql.Timestamp;
 
 @RestController
 @RequiredArgsConstructor
-public class TicketController {
+public class BookingController {
 
     private final ObjectMapper objectMapper;
     private final BookingService bookingService;
 
     private final ErrorsGenerator errorsGenerator;
 
-    @RequestMapping(value = "/booking/train/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getBookingByTrain(@PathVariable("id") Long trainId) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        bookingService.findAllByTrainId(trainId).stream().map(
-                                bookingEntity -> new BookingDTO(
-                                        bookingEntity.getBookingId(),
-                                        bookingEntity.getUserEmail(),
-                                        bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
-                                        bookingEntity.getBookingDate(),
-                                        bookingEntity.getStatus()
-                                )
-                        ).toList()
-                )
-        );
-    }
+//    @RequestMapping(value = "/booking/train/{id}", method = RequestMethod.GET)
+//    public ResponseEntity<String> getBookingByTrain(@PathVariable("id") Long trainId) throws JsonProcessingException {
+//        return ResponseEntity.ok(
+//                objectMapper.writeValueAsString(
+//                        bookingService.findAllByTrainId(trainId).stream().map(
+//                                bookingEntity -> new BookingDTO(
+//                                        bookingEntity.getBookingId(),
+//                                        bookingEntity.getUserEmail(),
+//                                        bookingEntity.getSeatId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getBookingDate(),
+//                                        bookingEntity.getStatus()
+//                                )
+//                        ).toList()
+//                )
+//        );
+//    }
 
-    @RequestMapping(value = "/booking/carriage/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> getBookingByCarriage(@PathVariable("id") Long carriageId) throws JsonProcessingException {
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        bookingService.findAllByTrainId(carriageId).stream().map(
-                                bookingEntity -> new BookingDTO(
-                                        bookingEntity.getBookingId(),
-                                        bookingEntity.getUserEmail(),
-                                        bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
-                                        bookingEntity.getBookingDate(),
-                                        bookingEntity.getStatus()
-                                )
-                        ).toList()
-                )
-        );
-    }
+//    @RequestMapping(value = "/booking/carriage/{id}", method = RequestMethod.GET)
+//    public ResponseEntity<String> getBookingByCarriage(@PathVariable("id") Long carriageId) throws JsonProcessingException {
+//        return ResponseEntity.ok(
+//                objectMapper.writeValueAsString(
+//                        bookingService.findAllByCarriageId(carriageId).stream().map(
+//                                bookingEntity -> new BookingDTO(
+//                                        bookingEntity.getBookingId(),
+//                                        bookingEntity.getUserEmail(),
+//                                        bookingEntity.getSeatId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getBookingDate(),
+//                                        bookingEntity.getStatus()
+//                                )
+//                        ).toList()
+//                )
+//        );
+//    }
 
     @RequestMapping(value = "/booking/seat/{id}", method = RequestMethod.GET)
     public ResponseEntity<String> getBookingBySeat(@PathVariable("id") Long seatId) throws JsonProcessingException {
@@ -71,8 +70,9 @@ public class TicketController {
                                 bookingEntity.getBookingId(),
                                 bookingEntity.getUserEmail(),
                                 bookingEntity.getSeatId(),
-                                bookingEntity.getCarriageId(),
-                                bookingEntity.getTrainId(),
+//                                bookingEntity.getCarriageId(),
+//                                bookingEntity.getTrainId(),
+                                bookingEntity.getPrice(),
                                 bookingEntity.getBookingDate(),
                                 bookingEntity.getStatus()
                         )
@@ -90,8 +90,9 @@ public class TicketController {
                                         bookingEntity.getBookingId(),
                                         bookingEntity.getUserEmail(),
                                         bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+                                        bookingEntity.getPrice(),
                                         bookingEntity.getBookingDate(),
                                         bookingEntity.getStatus()
                                 )
@@ -110,8 +111,9 @@ public class TicketController {
                                         bookingEntity.getBookingId(),
                                         bookingEntity.getUserEmail(),
                                         bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+                                        bookingEntity.getPrice(),
                                         bookingEntity.getBookingDate(),
                                         bookingEntity.getStatus()
                                 )
@@ -130,8 +132,9 @@ public class TicketController {
                                         bookingEntity.getBookingId(),
                                         bookingEntity.getUserEmail(),
                                         bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+                                        bookingEntity.getPrice(),
                                         bookingEntity.getBookingDate(),
                                         bookingEntity.getStatus()
                                 )
@@ -150,8 +153,9 @@ public class TicketController {
                                         bookingEntity.getBookingId(),
                                         bookingEntity.getUserEmail(),
                                         bookingEntity.getSeatId(),
-                                        bookingEntity.getCarriageId(),
-                                        bookingEntity.getTrainId(),
+//                                        bookingEntity.getCarriageId(),
+//                                        bookingEntity.getTrainId(),
+                                        bookingEntity.getPrice(),
                                         bookingEntity.getBookingDate(),
                                         bookingEntity.getStatus()
                                 )
@@ -189,8 +193,9 @@ public class TicketController {
                                 bookingEntity.getBookingId(),
                                 bookingEntity.getUserEmail(),
                                 bookingEntity.getSeatId(),
-                                bookingEntity.getCarriageId(),
-                                bookingEntity.getTrainId(),
+//                                bookingEntity.getCarriageId(),
+//                                bookingEntity.getTrainId(),
+                                bookingEntity.getPrice(),
                                 bookingEntity.getBookingDate(),
                                 bookingEntity.getStatus()
                         )
@@ -211,8 +216,9 @@ public class TicketController {
         bookingEntity.setBookingId(bookingDTO.getBookingId());
         bookingEntity.setUserEmail(bookingDTO.getUserEmail());
         bookingEntity.setSeatId(bookingDTO.getSeatId());
-        bookingEntity.setCarriageId(bookingDTO.getCarriageId());
-        bookingEntity.setTrainId(bookingDTO.getTrainId());
+//        bookingEntity.setCarriageId(bookingDTO.getCarriageId());
+//        bookingEntity.setTrainId(bookingDTO.getTrainId());
+        bookingEntity.setPrice(bookingDTO.getPrice());
         bookingEntity.setBookingDate(bookingDTO.getBookingDate());
         bookingEntity.setStatus(bookingDTO.getStatus());
 
@@ -224,8 +230,9 @@ public class TicketController {
                                 updatedBooking.getBookingId(),
                                 updatedBooking.getUserEmail(),
                                 updatedBooking.getSeatId(),
-                                updatedBooking.getCarriageId(),
-                                updatedBooking.getTrainId(),
+//                                updatedBooking.getCarriageId(),
+//                                updatedBooking.getTrainId(),
+                                updatedBooking.getPrice(),
                                 updatedBooking.getBookingDate(),
                                 updatedBooking.getStatus()
                         )
@@ -244,8 +251,9 @@ public class TicketController {
                                 updatedBooking.getBookingId(),
                                 updatedBooking.getUserEmail(),
                                 updatedBooking.getSeatId(),
-                                updatedBooking.getCarriageId(),
-                                updatedBooking.getTrainId(),
+//                                updatedBooking.getCarriageId(),
+//                                updatedBooking.getTrainId(),
+                                updatedBooking.getPrice(),
                                 updatedBooking.getBookingDate(),
                                 updatedBooking.getStatus()
                         )
@@ -275,8 +283,9 @@ public class TicketController {
                                 bookingEntity.getBookingId(),
                                 bookingEntity.getUserEmail(),
                                 bookingEntity.getSeatId(),
-                                bookingEntity.getCarriageId(),
-                                bookingEntity.getTrainId(),
+//                                bookingEntity.getCarriageId(),
+//                                bookingEntity.getTrainId(),
+                                bookingEntity.getPrice(),
                                 bookingEntity.getBookingDate(),
                                 bookingEntity.getStatus()
                         )

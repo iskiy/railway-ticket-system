@@ -25,9 +25,11 @@ public class BookingDTO {
 
     private Long seatId;
 
-    private Long carriageId;
+    private Long price;
 
-    private Long trainId;
+//    private Long carriageId;
+//
+//    private Long trainId;
 
     private Timestamp bookingDate;
 
