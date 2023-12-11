@@ -8,10 +8,10 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     ports:
-      - "5435:5432"
-  ticketservice:
+      - "5436:5432"
+  bookingservice:
     build: .
-    image: railway/ticket-service:1.0-SNAPSHOT
+    image: railway/booking-service:1.0-SNAPSHOT
     depends_on:
       - db
     ports:
