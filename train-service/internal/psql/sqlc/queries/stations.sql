@@ -15,6 +15,7 @@ LIMIT 1;
 
 -- name: GetStations :many
 SELECT * FROM stations
+ORDER BY station_id
 LIMIT $1
 OFFSET $2;
 

@@ -8,7 +8,8 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
     ports:
-      - "5436:5432"
+      - "5434:5432"
+
   bookingservice:
     build: .
     image: railway/booking-service:1.0-SNAPSHOT

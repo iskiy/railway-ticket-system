@@ -55,6 +55,7 @@ const getTrainCars = `-- name: GetTrainCars :many
 SELECT car_id, car_type, train_id
 FROM cars
 WHERE train_id = $1
+ORDER BY car_id
 `
 
 func (q *Queries) GetTrainCars(ctx context.Context, trainID int64) ([]Car, error) {

@@ -12,7 +12,8 @@ LIMIT 1;
 -- name: GetTrainCars :many
 SELECT *
 FROM cars
-WHERE train_id = $1;
+WHERE train_id = $1
+ORDER BY car_id;
 
 -- name: DeleteCar :exec
 DELETE FROM cars

@@ -60,6 +60,7 @@ func (q *Queries) GetStationByName(ctx context.Context, stationName string) (Sta
 
 const getStations = `-- name: GetStations :many
 SELECT station_id, station_name FROM stations
+ORDER BY station_id
 LIMIT $1
 OFFSET $2
 `
