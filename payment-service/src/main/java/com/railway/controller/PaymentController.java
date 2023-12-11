@@ -2,7 +2,11 @@ package com.railway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.railway.grpc.Booking;
+import com.railway.grpc.BookingServiceClient;
+import com.railway.grpc.BookingServiceGrpc;
 import com.railway.model.AmountBetweenDTO;
+import com.railway.model.PaymentExtendedDTO;
 import com.railway.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import com.railway.model.PaymentDTO;
@@ -24,6 +28,8 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     private final Random random = new Random();
+
+    private final BookingServiceClient bookingServiceClient;
 
     @RequestMapping(value = "/payment/status", method = RequestMethod.GET)
     public ResponseEntity<String> getPaymentByStatus(@RequestBody final String status) throws JsonProcessingException {
@@ -182,6 +188,50 @@ public class PaymentController {
                         )
                 )
         );
+    }
+
+    @RequestMapping(value = "/payment/pay", method = RequestMethod.POST)
+    public ResponseEntity<String> pay(@RequestBody final PaymentExtendedDTO paymentDTO) throws JsonProcessingException, InterruptedException {
+        Booking.GetBookingInfoAndCheckReservationResponse response =
+                bookingServiceClient.getBookingInfoAndCheckReservation(paymentDTO.getBookingId());
+        if (response.getStatus() == Booking.BookingStatus.Booked) {
+            int pause = random.nextInt(30);
+            TimeUnit.SECONDS.sleep(pause);
+            boolean isSuccess = random.nextBoolean();
+            if (isSuccess) {
+                PaymentDTO dto = new PaymentDTO(paymentDTO.getPaymentId(),
+                        paymentDTO.getAmount(),
+                        paymentDTO.getPaymentTimestamp(),
+                        paymentDTO.getMethod(),
+                        paymentDTO.getStatus());
+                try {
+                    bookingServiceClient.removeBooking(paymentDTO.getPaymentId());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                return addPayment(dto);
+            }
+            else {
+                if (random.nextBoolean()) {
+                    pause = random.nextInt(60);
+                    TimeUnit.SECONDS.sleep(pause);
+                    if (random.nextBoolean()) {
+                        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+                                .body(HttpStatus.BAD_GATEWAY.getReasonPhrase());
+                    }
+                    return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+                            .body(HttpStatus.REQUEST_TIMEOUT.getReasonPhrase());
+                }
+                if (random.nextBoolean()) {
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                            .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
+                }
+                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                        .body(HttpStatus.EXPECTATION_FAILED.getReasonPhrase());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
     }
 
     @RequestMapping(value = "/payment/{id}", method = RequestMethod.GET)

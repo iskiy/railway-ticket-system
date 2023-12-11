@@ -2,6 +2,7 @@ package com.railway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.railway.grpc.TrainServiceClient;
 import com.railway.model.BookingDTO;
 import com.railway.model.BookingEntity;
 import com.railway.model.BookingStatus;
@@ -22,6 +23,8 @@ public class BookingController {
     private final BookingService bookingService;
 
     private final ErrorsGenerator errorsGenerator;
+
+    private final TrainServiceClient trainServiceClient;
 
 //    @RequestMapping(value = "/booking/train/{id}", method = RequestMethod.GET)
 //    public ResponseEntity<String> getBookingByTrain(@PathVariable("id") Long trainId) throws JsonProcessingException {
@@ -187,6 +190,7 @@ public class BookingController {
     @RequestMapping(value = "/booking", method = RequestMethod.POST)
     public ResponseEntity<String> addBooking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
         BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
+        trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         new BookingDTO(
