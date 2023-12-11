@@ -1,4 +1,4 @@
-package booking;
+package com.railway.grpc;
 
 import static io.grpc.stub.ClientCalls.asyncUnaryCall;
 import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
@@ -24,32 +24,32 @@ public final class BookingServiceGrpc {
 
   private BookingServiceGrpc() {}
 
-  public static final String SERVICE_NAME = "booking.BookingService";
+  public static final String SERVICE_NAME = "com.railway.grpc.BookingService";
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<booking.Booking.GetBookingInfoAndCheckReservationRequest,
-      booking.Booking.GetBookingInfoAndCheckReservationResponse> METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION =
-      io.grpc.MethodDescriptor.<booking.Booking.GetBookingInfoAndCheckReservationRequest, booking.Booking.GetBookingInfoAndCheckReservationResponse>newBuilder()
+  public static final io.grpc.MethodDescriptor<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest,
+      com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse> METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION =
+      io.grpc.MethodDescriptor.<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest, com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
-              "booking.BookingService", "GetBookingInfoAndCheckReservation"))
+              "com.railway.grpc.BookingService", "GetBookingInfoAndCheckReservation"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              booking.Booking.GetBookingInfoAndCheckReservationRequest.getDefaultInstance()))
+              com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              booking.Booking.GetBookingInfoAndCheckReservationResponse.getDefaultInstance()))
+              com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse.getDefaultInstance()))
           .build();
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<booking.Booking.RemoveBookingRequest,
-      booking.Booking.RemoveBookingResponse> METHOD_REMOVE_BOOKING =
-      io.grpc.MethodDescriptor.<booking.Booking.RemoveBookingRequest, booking.Booking.RemoveBookingResponse>newBuilder()
+  public static final io.grpc.MethodDescriptor<com.railway.grpc.Booking.RemoveBookingRequest,
+      com.railway.grpc.Booking.RemoveBookingResponse> METHOD_REMOVE_BOOKING =
+      io.grpc.MethodDescriptor.<com.railway.grpc.Booking.RemoveBookingRequest, com.railway.grpc.Booking.RemoveBookingResponse>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
-              "booking.BookingService", "RemoveBooking"))
+              "com.railway.grpc.BookingService", "RemoveBooking"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              booking.Booking.RemoveBookingRequest.getDefaultInstance()))
+              com.railway.grpc.Booking.RemoveBookingRequest.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              booking.Booking.RemoveBookingResponse.getDefaultInstance()))
+              com.railway.grpc.Booking.RemoveBookingResponse.getDefaultInstance()))
           .build();
 
   /**
@@ -81,15 +81,15 @@ public final class BookingServiceGrpc {
 
     /**
      */
-    public void getBookingInfoAndCheckReservation(booking.Booking.GetBookingInfoAndCheckReservationRequest request,
-        io.grpc.stub.StreamObserver<booking.Booking.GetBookingInfoAndCheckReservationResponse> responseObserver) {
+    public void getBookingInfoAndCheckReservation(com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION, responseObserver);
     }
 
     /**
      */
-    public void removeBooking(booking.Booking.RemoveBookingRequest request,
-        io.grpc.stub.StreamObserver<booking.Booking.RemoveBookingResponse> responseObserver) {
+    public void removeBooking(com.railway.grpc.Booking.RemoveBookingRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Booking.RemoveBookingResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_REMOVE_BOOKING, responseObserver);
     }
 
@@ -99,15 +99,15 @@ public final class BookingServiceGrpc {
             METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION,
             asyncUnaryCall(
               new MethodHandlers<
-                booking.Booking.GetBookingInfoAndCheckReservationRequest,
-                booking.Booking.GetBookingInfoAndCheckReservationResponse>(
+                com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest,
+                com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse>(
                   this, METHODID_GET_BOOKING_INFO_AND_CHECK_RESERVATION)))
           .addMethod(
             METHOD_REMOVE_BOOKING,
             asyncUnaryCall(
               new MethodHandlers<
-                booking.Booking.RemoveBookingRequest,
-                booking.Booking.RemoveBookingResponse>(
+                com.railway.grpc.Booking.RemoveBookingRequest,
+                com.railway.grpc.Booking.RemoveBookingResponse>(
                   this, METHODID_REMOVE_BOOKING)))
           .build();
     }
@@ -133,16 +133,16 @@ public final class BookingServiceGrpc {
 
     /**
      */
-    public void getBookingInfoAndCheckReservation(booking.Booking.GetBookingInfoAndCheckReservationRequest request,
-        io.grpc.stub.StreamObserver<booking.Booking.GetBookingInfoAndCheckReservationResponse> responseObserver) {
+    public void getBookingInfoAndCheckReservation(com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION, getCallOptions()), request, responseObserver);
     }
 
     /**
      */
-    public void removeBooking(booking.Booking.RemoveBookingRequest request,
-        io.grpc.stub.StreamObserver<booking.Booking.RemoveBookingResponse> responseObserver) {
+    public void removeBooking(com.railway.grpc.Booking.RemoveBookingRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Booking.RemoveBookingResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_REMOVE_BOOKING, getCallOptions()), request, responseObserver);
     }
@@ -168,14 +168,14 @@ public final class BookingServiceGrpc {
 
     /**
      */
-    public booking.Booking.GetBookingInfoAndCheckReservationResponse getBookingInfoAndCheckReservation(booking.Booking.GetBookingInfoAndCheckReservationRequest request) {
+    public com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse getBookingInfoAndCheckReservation(com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION, getCallOptions(), request);
     }
 
     /**
      */
-    public booking.Booking.RemoveBookingResponse removeBooking(booking.Booking.RemoveBookingRequest request) {
+    public com.railway.grpc.Booking.RemoveBookingResponse removeBooking(com.railway.grpc.Booking.RemoveBookingRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_REMOVE_BOOKING, getCallOptions(), request);
     }
@@ -201,16 +201,16 @@ public final class BookingServiceGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<booking.Booking.GetBookingInfoAndCheckReservationResponse> getBookingInfoAndCheckReservation(
-        booking.Booking.GetBookingInfoAndCheckReservationRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse> getBookingInfoAndCheckReservation(
+        com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_GET_BOOKING_INFO_AND_CHECK_RESERVATION, getCallOptions()), request);
     }
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<booking.Booking.RemoveBookingResponse> removeBooking(
-        booking.Booking.RemoveBookingRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.railway.grpc.Booking.RemoveBookingResponse> removeBooking(
+        com.railway.grpc.Booking.RemoveBookingRequest request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_REMOVE_BOOKING, getCallOptions()), request);
     }
@@ -237,12 +237,12 @@ public final class BookingServiceGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_GET_BOOKING_INFO_AND_CHECK_RESERVATION:
-          serviceImpl.getBookingInfoAndCheckReservation((booking.Booking.GetBookingInfoAndCheckReservationRequest) request,
-              (io.grpc.stub.StreamObserver<booking.Booking.GetBookingInfoAndCheckReservationResponse>) responseObserver);
+          serviceImpl.getBookingInfoAndCheckReservation((com.railway.grpc.Booking.GetBookingInfoAndCheckReservationRequest) request,
+              (io.grpc.stub.StreamObserver<com.railway.grpc.Booking.GetBookingInfoAndCheckReservationResponse>) responseObserver);
           break;
         case METHODID_REMOVE_BOOKING:
-          serviceImpl.removeBooking((booking.Booking.RemoveBookingRequest) request,
-              (io.grpc.stub.StreamObserver<booking.Booking.RemoveBookingResponse>) responseObserver);
+          serviceImpl.removeBooking((com.railway.grpc.Booking.RemoveBookingRequest) request,
+              (io.grpc.stub.StreamObserver<com.railway.grpc.Booking.RemoveBookingResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -263,7 +263,7 @@ public final class BookingServiceGrpc {
   private static final class BookingServiceDescriptorSupplier implements io.grpc.protobuf.ProtoFileDescriptorSupplier {
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return booking.Booking.getDescriptor();
+      return com.railway.grpc.Booking.getDescriptor();
     }
   }
 

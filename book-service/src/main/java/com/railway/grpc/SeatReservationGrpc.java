@@ -1,4 +1,4 @@
-package train;
+package com.railway.grpc;
 
 import static io.grpc.stub.ClientCalls.asyncUnaryCall;
 import static io.grpc.stub.ClientCalls.asyncServerStreamingCall;
@@ -24,20 +24,20 @@ public final class SeatReservationGrpc {
 
   private SeatReservationGrpc() {}
 
-  public static final String SERVICE_NAME = "train.SeatReservation";
+  public static final String SERVICE_NAME = "com.railway.grpc.SeatReservation";
 
   // Static method descriptors that strictly reflect the proto.
   @io.grpc.ExperimentalApi("https://github.com/grpc/grpc-java/issues/1901")
-  public static final io.grpc.MethodDescriptor<train.Train.CheckSeatAvailabilityAndReserveRequest,
-      train.Train.CheckSeatAvailabilityAndReserveResponse> METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE =
-      io.grpc.MethodDescriptor.<train.Train.CheckSeatAvailabilityAndReserveRequest, train.Train.CheckSeatAvailabilityAndReserveResponse>newBuilder()
+  public static final io.grpc.MethodDescriptor<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest,
+      com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse> METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE =
+      io.grpc.MethodDescriptor.<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest, com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse>newBuilder()
           .setType(io.grpc.MethodDescriptor.MethodType.UNARY)
           .setFullMethodName(generateFullMethodName(
-              "train.SeatReservation", "CheckSeatAvailabilityAndReserve"))
+              "com.railway.grpc.SeatReservation", "CheckSeatAvailabilityAndReserve"))
           .setRequestMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              train.Train.CheckSeatAvailabilityAndReserveRequest.getDefaultInstance()))
+              com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest.getDefaultInstance()))
           .setResponseMarshaller(io.grpc.protobuf.ProtoUtils.marshaller(
-              train.Train.CheckSeatAvailabilityAndReserveResponse.getDefaultInstance()))
+              com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse.getDefaultInstance()))
           .build();
 
   /**
@@ -69,8 +69,8 @@ public final class SeatReservationGrpc {
 
     /**
      */
-    public void checkSeatAvailabilityAndReserve(train.Train.CheckSeatAvailabilityAndReserveRequest request,
-        io.grpc.stub.StreamObserver<train.Train.CheckSeatAvailabilityAndReserveResponse> responseObserver) {
+    public void checkSeatAvailabilityAndReserve(com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse> responseObserver) {
       asyncUnimplementedUnaryCall(METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE, responseObserver);
     }
 
@@ -80,8 +80,8 @@ public final class SeatReservationGrpc {
             METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE,
             asyncUnaryCall(
               new MethodHandlers<
-                train.Train.CheckSeatAvailabilityAndReserveRequest,
-                train.Train.CheckSeatAvailabilityAndReserveResponse>(
+                com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest,
+                com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse>(
                   this, METHODID_CHECK_SEAT_AVAILABILITY_AND_RESERVE)))
           .build();
     }
@@ -107,8 +107,8 @@ public final class SeatReservationGrpc {
 
     /**
      */
-    public void checkSeatAvailabilityAndReserve(train.Train.CheckSeatAvailabilityAndReserveRequest request,
-        io.grpc.stub.StreamObserver<train.Train.CheckSeatAvailabilityAndReserveResponse> responseObserver) {
+    public void checkSeatAvailabilityAndReserve(com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest request,
+        io.grpc.stub.StreamObserver<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse> responseObserver) {
       asyncUnaryCall(
           getChannel().newCall(METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE, getCallOptions()), request, responseObserver);
     }
@@ -134,7 +134,7 @@ public final class SeatReservationGrpc {
 
     /**
      */
-    public train.Train.CheckSeatAvailabilityAndReserveResponse checkSeatAvailabilityAndReserve(train.Train.CheckSeatAvailabilityAndReserveRequest request) {
+    public com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse checkSeatAvailabilityAndReserve(com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest request) {
       return blockingUnaryCall(
           getChannel(), METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE, getCallOptions(), request);
     }
@@ -160,8 +160,8 @@ public final class SeatReservationGrpc {
 
     /**
      */
-    public com.google.common.util.concurrent.ListenableFuture<train.Train.CheckSeatAvailabilityAndReserveResponse> checkSeatAvailabilityAndReserve(
-        train.Train.CheckSeatAvailabilityAndReserveRequest request) {
+    public com.google.common.util.concurrent.ListenableFuture<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse> checkSeatAvailabilityAndReserve(
+        com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest request) {
       return futureUnaryCall(
           getChannel().newCall(METHOD_CHECK_SEAT_AVAILABILITY_AND_RESERVE, getCallOptions()), request);
     }
@@ -187,8 +187,8 @@ public final class SeatReservationGrpc {
     public void invoke(Req request, io.grpc.stub.StreamObserver<Resp> responseObserver) {
       switch (methodId) {
         case METHODID_CHECK_SEAT_AVAILABILITY_AND_RESERVE:
-          serviceImpl.checkSeatAvailabilityAndReserve((train.Train.CheckSeatAvailabilityAndReserveRequest) request,
-              (io.grpc.stub.StreamObserver<train.Train.CheckSeatAvailabilityAndReserveResponse>) responseObserver);
+          serviceImpl.checkSeatAvailabilityAndReserve((com.railway.grpc.Train.CheckSeatAvailabilityAndReserveRequest) request,
+              (io.grpc.stub.StreamObserver<com.railway.grpc.Train.CheckSeatAvailabilityAndReserveResponse>) responseObserver);
           break;
         default:
           throw new AssertionError();
@@ -209,7 +209,7 @@ public final class SeatReservationGrpc {
   private static final class SeatReservationDescriptorSupplier implements io.grpc.protobuf.ProtoFileDescriptorSupplier {
     @java.lang.Override
     public com.google.protobuf.Descriptors.FileDescriptor getFileDescriptor() {
-      return train.Train.getDescriptor();
+      return com.railway.grpc.Train.getDescriptor();
     }
   }
 
