@@ -24,7 +24,7 @@ services:
       - PORT=8081
     ports:
       - 8081:8081
-      - 50052:50051
+      - 9090:9090
   migrate:
     image: migrate/migrate
     depends_on:
@@ -34,6 +34,8 @@ services:
       - ./migrations:/migrations
     command: [ "-path", "/migrations", "-database", "postgresql://root:password@train_postgres:5432/traindb?sslmode=disable", "up" ]
 
-
+  ping-curl-container:
+    image: my-ping-curl-image
+    command: tail -f /dev/null
 volumes:
   postgres_data:
