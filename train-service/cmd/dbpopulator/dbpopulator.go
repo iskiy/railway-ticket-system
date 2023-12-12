@@ -62,6 +62,7 @@ type DBPopulator struct {
 func (p *DBPopulator) PopulateDB() {
 	train := rest.CreateTrainWithFullInfoRequest{}
 	trainNum := 100
+	seatNums := 10
 	stations := CreateStation(100)
 	for i, s := range stations {
 		id, err := p.Repo.CreateStation(context.Background(), s.StationName)
@@ -81,10 +82,29 @@ func (p *DBPopulator) PopulateDB() {
 		train.FinishStation = finishStation.StationID
 		train.ArrivalTime = time.Now().AddDate(0, 0, 1).Add(6 * time.Hour)
 		train.DepartureTime = time.Now().AddDate(0, 0, 1)
-		id, err :=
+		id, err := p.Repo.CreateTrain(context.Background(), sqlc.CreateTrainParams{
+			TrainName:       train.TrainName,
+			StartStationID:  train.StartStation,
+			DepartureTime:   train.DepartureTime,
+			FinishStationID: train.FinishStation,
+			ArrivalTime:     train.ArrivalTime,
+		})
+		if err != nil {
+			log.Fatalln(err)
+		}
+		train.TrainID = id
 		cars := make([]rest.Car, carsAmount)
-		for i, c := range cars {
+		for j, c := range cars {
+			cars[j].CarType = "comfort"
+			carID, err := p.Repo.CreateCar(context.Background(), sqlc.CreateCarParams{CarType: c.CarType, TrainID: train.TrainID})
+			if err != nil {
+				log.Fatalln(err)
+			}
+			cars[].CarID = carID
+			seats := make([]sqlc.Seat, seatNums)
+			for k, s := range seats {
 
+			}
 		}
 	}
 

@@ -287,9 +287,9 @@ public class PaymentController {
         }
         if (responseObj != null && responseObj.getUserEmail().equals(paymentDTO.getUserEmail()) &&
                 responseObj.getStatus() == Booking.BookingStatus.Booked) {
-            int pause = random.nextInt(30);
+            int pause = random.nextInt(2);
             TimeUnit.SECONDS.sleep(pause);
-            boolean isSuccess = random.nextBoolean();
+            boolean isSuccess = true;
             if (isSuccess) {
                 PaymentDTO dto = new PaymentDTO(paymentDTO.getPaymentId(),
                         paymentDTO.getAmount(),
@@ -323,7 +323,7 @@ public class PaymentController {
                 return addPayment(dto);
             } else {
                 if (random.nextBoolean()) {
-                    pause = random.nextInt(60);
+                    pause = random.nextInt(2);
                     TimeUnit.SECONDS.sleep(pause);
                     if (random.nextBoolean()) {
                         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
