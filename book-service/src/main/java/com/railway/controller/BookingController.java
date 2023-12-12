@@ -219,15 +219,16 @@ public class BookingController {
         );
     }
 
-    @RequestMapping(value = "/booking/http", method = RequestMethod.POST)
-    public ResponseEntity<String> addBookingHttp(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
-        BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
+    @RequestMapping(value = "/booking/http/{id}", method = RequestMethod.GET)
+    public ResponseEntity<String> getHttpBookingId(@PathVariable("id") Long id) throws JsonProcessingException {
+        BookingEntity bookingEntity = bookingService.getBookingById(id);
         // trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
         JSONObject json = new JSONObject();
         json.put("bookingId_", bookingEntity.getBookingId());
         json.put("userEmail_", bookingEntity.getUserEmail());
         json.put("seatId_", bookingEntity.getSeatId());
         json.put("status_", bookingEntity.getStatus());
+        System.out.println(json);
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         json

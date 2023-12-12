@@ -13,6 +13,7 @@ import com.railway.model.PaymentDTO;
 import com.railway.model.PaymentEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -262,16 +263,14 @@ public class PaymentController {
 //
 //            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost("http://bookingservice:8080/booking/http");
-            httpPost.setHeader("Content-type", "application/json");
-            StringEntity stringEntity = new StringEntity(json.toString());
-            httpPost.setEntity(stringEntity);
+            HttpGet httpGet = new HttpGet("http://train_service:8080/booking/http/"+bookingId);
+            httpGet.setHeader("Content-type", "application/json");
 
-            HttpResponse response = httpClient.execute(httpPost);
+            HttpResponse response = httpClient.execute(httpGet);
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             System.out.println(responseString);
 
-            if (response.getStatusLine().getStatusCode()  == 200) {
+            if (response.getStatusLine().getStatusCode() == 200) {
                 JSONObject jsonResponse = new JSONObject(response);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
@@ -286,7 +285,8 @@ public class PaymentController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (responseObj != null && responseObj.getStatus() == Booking.BookingStatus.Booked) {
+        if (responseObj != null && responseObj.getUserEmail().equals(paymentDTO.getUserEmail()) &&
+                responseObj.getStatus() == Booking.BookingStatus.Booked) {
             int pause = random.nextInt(30);
             TimeUnit.SECONDS.sleep(pause);
             boolean isSuccess = random.nextBoolean();

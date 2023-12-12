@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="http for booking and payment">
+      <change afterPath="$PROJECT_DIR$/payment-service/payment-service.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/BookingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/payment-service.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/payment-service/src/main/java/com/railway/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/payment-service/src/main/java/com/railway/controller/PaymentController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
