@@ -61,8 +61,6 @@ type DBPopulator struct {
 
 func (p *DBPopulator) PopulateDB() {
 	train := rest.CreateTrainWithFullInfoRequest{}
-	trainNum := 100
-	seatNums := 10
 	stations := CreateStation(100)
 	for i, s := range stations {
 		id, err := p.Repo.CreateStation(context.Background(), s.StationName)
@@ -73,6 +71,7 @@ func (p *DBPopulator) PopulateDB() {
 	}
 
 	trainsAmount := 100
+	seatNums := 10
 	carsAmount := 10
 	for i := 0; i < trainsAmount; i++ {
 		train := rest.CreateTrainWithFullInfoRequest{}
@@ -94,16 +93,25 @@ func (p *DBPopulator) PopulateDB() {
 		}
 		train.TrainID = id
 		cars := make([]rest.Car, carsAmount)
-		for j, c := range cars {
+		for j, _ := range cars {
 			cars[j].CarType = "comfort"
-			carID, err := p.Repo.CreateCar(context.Background(), sqlc.CreateCarParams{CarType: c.CarType, TrainID: train.TrainID})
+			carID, err := p.Repo.CreateCar(context.Background(), sqlc.CreateCarParams{CarType: cars[j].CarType, TrainID: train.TrainID})
 			if err != nil {
 				log.Fatalln(err)
 			}
-			cars[].CarID = carID
+			cars[j].CarID = carID
 			seats := make([]sqlc.Seat, seatNums)
-			for k, s := range seats {
-
+			for k, _ := range seats {
+				seats[k].Price = 100
+				seats[k].CarID = carID
+				seats[k].SeatNumber = strconv.Itoa(k)
+				seats[k].IsAvailable = true
+				_, err = p.Repo.CreateSeat(context.Background(), sqlc.CreateSeatParams{
+					SeatNumber: seats[k].SeatNumber,
+				})
+				if err != nil {
+					log.Fatalln(err)
+				}
 			}
 		}
 	}
