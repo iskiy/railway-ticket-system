@@ -234,9 +234,8 @@ public class BookingController {
 
     @RequestMapping(value = "/bookinghttp", method = RequestMethod.POST)
     public ResponseEntity<String> booking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
-        BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
         try {
-            long seatId = bookingEntity.getSeatId();
+            long seatId = bookingDTO.getSeatId();
             JSONObject json = new JSONObject();
             json.put("seat_id", seatId);
 
@@ -272,7 +271,9 @@ public class BookingController {
             httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return ResponseEntity.badRequest().build();
         }
+        BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         new BookingDTO(
