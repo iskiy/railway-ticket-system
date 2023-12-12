@@ -2,33 +2,33 @@ version: '3.8'
 
 services:
  # Ticket service
-#   ticket_db:
-#     image: postgres:16
-#     environment:
-#       POSTGRES_DB: ticketdb
-#       POSTGRES_USER: root
-#       POSTGRES_PASSWORD: password
-#     healthcheck:
-#       test: ["CMD-SHELL", "pg_isready -U postgres"]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
-#     ports:
-#       - "5432:5432"
+  ticket_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: ticketdb
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
 
-#   ticket_service:
-#     build:
-#       context: ./schedule-service
-#     image: railway/ticket-service:1.0-SNAPSHOT
-#     depends_on:
-#       ticket_db:
-#         condition: service_healthy
-#     environment:
-#       DB_URL: jdbc:postgresql://ticket_db:5432/ticketdb?sslmode=disable
-#       DB_USERNAME: root
-#       DB_PASSWORD: password
-#     ports:
-#       - "8080:8080"
+  ticketservice:
+    build:
+      context: ./schedule-service
+    image: railway/ticket-service:1.0-SNAPSHOT
+    depends_on:
+      ticket_db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://ticket_db:5432/ticketdb?sslmode=disable
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    ports:
+      - "8080:8080"
 
 #  # Train service
   train_db:
@@ -45,7 +45,7 @@ services:
     ports:
       - "5433:5432"
 
-  train_service:
+  trainservice:
     build:
       context: ./train-service
     depends_on:
@@ -81,7 +81,7 @@ services:
     ports:
       - "5434:5432"
     
-  booking_service:
+  bookingservice:
     build:
       context: ./book-service
     image: railway/booking-service:1.0-SNAPSHOT
@@ -100,30 +100,30 @@ services:
       - "8082:8080"
 
 # # Payment service
-#   payment_db:
-#     image: postgres:16
-#     environment:
-#       POSTGRES_DB: paymentdb
-#       POSTGRES_USER: root
-#       POSTGRES_PASSWORD: password
-#     healthcheck:
-#       test: ["CMD-SHELL", "pg_isready -U postgres"]
-#       interval: 10s
-#       timeout: 5s
-#       retries: 5
-#     ports:
-#       - "5435:5432"
+  payment_db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: paymentdb
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5435:5432"
 
-#   payment_service:
-#     build:
-#       context: ./payment-service
-#     image: railway/payment-service:1.0-SNAPSHOT
-#     depends_on:
-#       payment_db:
-#           condition: service_healthy
-#     environment:
-#       DB_URL: jdbc:postgresql://payment_db:5432/paymentdb?sslmode=disable
-#       DB_USERNAME: root
-#       DB_PASSWORD: password
-#     ports:
-#       - "8083:8080"
+  paymentservice:
+    build:
+      context: ./payment-service
+    image: railway/payment-service:1.0-SNAPSHOT
+    depends_on:
+      payment_db:
+          condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://payment_db:5432/paymentdb?sslmode=disable
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    ports:
+      - "8083:8080"

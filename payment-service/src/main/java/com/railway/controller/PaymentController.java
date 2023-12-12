@@ -245,7 +245,7 @@ public class PaymentController {
 //                .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
 //    }
 
-    @RequestMapping(value = "/payment/pay_http", method = RequestMethod.POST)
+    @RequestMapping(value = "/payment/payhttp", method = RequestMethod.POST)
     public ResponseEntity<String> payHttp(@RequestBody final PaymentExtendedDTO paymentDTO) throws JsonProcessingException, InterruptedException {
         Booking.GetBookingInfoAndCheckReservationResponse responseObj = null;
         try {
@@ -262,7 +262,7 @@ public class PaymentController {
 //
 //            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost("http://train_service:8080/booking/book_create_http");
+            HttpPost httpPost = new HttpPost("http://bookingservice:8080/booking/http");
             httpPost.setHeader("Content-type", "application/json");
             StringEntity stringEntity = new StringEntity(json.toString());
             httpPost.setEntity(stringEntity);
@@ -300,7 +300,7 @@ public class PaymentController {
                     long paymentId = paymentDTO.getPaymentId();
 
                     CloseableHttpClient httpClient = HttpClients.createDefault();
-                    HttpDelete httpDelete = new HttpDelete("http://train_service:8080/booking/http/"+paymentId);
+                    HttpDelete httpDelete = new HttpDelete("http://bookingservice:8080/booking/http/"+paymentId);
                     httpDelete.setHeader("Content-type", "application/json");
 //                    HttpClient client = HttpClient.newHttpClient();
 //                    java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()

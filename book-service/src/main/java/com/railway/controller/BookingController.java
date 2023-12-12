@@ -235,7 +235,7 @@ public class BookingController {
         );
     }
 
-    @RequestMapping(value = "/booking_http", method = RequestMethod.POST)
+    @RequestMapping(value = "/bookinghttp", method = RequestMethod.POST)
     public ResponseEntity<String> booking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
         BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
         try {
@@ -252,7 +252,7 @@ public class BookingController {
 
             //     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpPost httpPost = new HttpPost("http://train_service:8080/check-seat");
+            HttpPost httpPost = new HttpPost("http://trainservice:8080/check-seat");
             httpPost.setHeader("Content-type", "application/json");
             StringEntity stringEntity = new StringEntity(json.toString());
             httpPost.setEntity(stringEntity);
