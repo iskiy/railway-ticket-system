@@ -11,16 +11,23 @@ import com.railway.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import com.railway.model.PaymentDTO;
 import com.railway.model.PaymentEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.sql.Timestamp;
+// import java.net.http.HttpClient;
+// import java.net.http.HttpRequest;
+// import java.net.http.HttpResponse;
+// import java.sql.Timestamp;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -245,26 +252,36 @@ public class PaymentController {
             long bookingId = paymentDTO.getBookingId();
             JSONObject json = new JSONObject();
             json.put("booking_id", bookingId);
+//
+//            HttpClient client = HttpClient.newHttpClient();
+//            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+//                    .uri(URI.create("http://booking_service:8080/booking/book_create_http"))
+//                    .header("Content-Type", "application/json")
+//                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+//                    .build();
+//
+//            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost("http://train_service:8080/booking/book_create_http");
+            httpPost.setHeader("Content-type", "application/json");
+            StringEntity stringEntity = new StringEntity(json.toString());
+            httpPost.setEntity(stringEntity);
 
-            HttpClient client = HttpClient.newHttpClient();
-            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                    .uri(URI.create("http://booking_service:8080/booking/book_create_http"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-                    .build();
+            HttpResponse response = httpClient.execute(httpPost);
+            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            System.out.println(responseString);
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == 200) {
-                JSONObject jsonResponse = new JSONObject(response.body());
+            if (response.getStatusLine().getStatusCode()  == 200) {
+                JSONObject jsonResponse = new JSONObject(response);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
                 int seatId_ = jsonResponse.getInt("seat_id");
-                Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getInt("seat_id"));
+                Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getInt("status_"));
                 responseObj = Booking.GetBookingInfoAndCheckReservationResponse.newBuilder()
                         .setBookingId(bookingId_).setUserEmail(userEmail_).setSeatId(seatId_).setStatus(status_).build();
             } else {
-                System.err.println("Error: " + response.statusCode());
+                System.err.println("Error: " + response.getStatusLine().getStatusCode());
+                return ResponseEntity.badRequest().build();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,16 +299,21 @@ public class PaymentController {
                 try {
                     long paymentId = paymentDTO.getPaymentId();
 
-                    HttpClient client = HttpClient.newHttpClient();
-                    java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
-                            .uri(URI.create("http://booking_service:8080/booking/http/" + paymentId))
-                            .header("Content-Type", "application/json")
-                            .DELETE()
-                            .build();
-
-                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-                    if (response.statusCode() != 200) {
+                    CloseableHttpClient httpClient = HttpClients.createDefault();
+                    HttpDelete httpDelete = new HttpDelete("http://train_service:8080/booking/http/"+paymentId);
+                    httpDelete.setHeader("Content-type", "application/json");
+//                    HttpClient client = HttpClient.newHttpClient();
+//                    java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+//                            .uri(URI.create("http://booking_service:8080/booking/http/" + paymentId))
+//                            .header("Content-Type", "application/json")
+//                            .DELETE()
+//                            .build();
+//
+//                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    HttpResponse response = httpClient.execute(httpDelete);
+                    String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+                    System.out.println(responseString);
+                    if (response.getStatusLine().getStatusCode() != 200) {
                         ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                 .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
                     }

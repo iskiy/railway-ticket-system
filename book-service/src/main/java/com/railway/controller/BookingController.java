@@ -3,6 +3,7 @@ package com.railway.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 // import com.railway.grpc.TrainServiceClient;
+import com.railway.grpc.Booking;
 import com.railway.model.BookingDTO;
 import com.railway.model.BookingEntity;
 import com.railway.model.BookingStatus;
@@ -183,7 +184,7 @@ public class BookingController {
             throws JsonProcessingException {
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
-                       bookingService.isBooked(seatId)
+                        bookingService.isBooked(seatId)
                 )
         );
     }
@@ -218,22 +219,18 @@ public class BookingController {
         );
     }
 
-    @RequestMapping(value = "/booking/Http", method = RequestMethod.POST)
+    @RequestMapping(value = "/booking/http", method = RequestMethod.POST)
     public ResponseEntity<String> addBookingHttp(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
         BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
         // trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
+        JSONObject json = new JSONObject();
+        json.put("bookingId_", bookingEntity.getBookingId());
+        json.put("userEmail_", bookingEntity.getUserEmail());
+        json.put("seatId_", bookingEntity.getSeatId());
+        json.put("status_", bookingEntity.getStatus());
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
-                        new BookingDTO(
-                                bookingEntity.getBookingId(),
-                                bookingEntity.getUserEmail(),
-                                bookingEntity.getSeatId(),
-//                                bookingEntity.getCarriageId(),
-//                                bookingEntity.getTrainId(),
-                                bookingEntity.getPrice(),
-                                bookingEntity.getBookingDate(),
-                                bookingEntity.getStatus()
-                        )
+                        json
                 )
         );
     }
@@ -245,37 +242,37 @@ public class BookingController {
             long seatId = bookingEntity.getSeatId();
             JSONObject json = new JSONObject();
             json.put("seat_id", seatId);
-                
-        //     HttpClient client = HttpClient.newHttpClient();
-        //     HttpRequest request = HttpRequest.newBuilder()
-        //             .uri(URI.create("http://train_service:8080/check-seat"))
-        //             .header("Content-Type", "application/json")
-        //             .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-        //             .build();
 
-        //     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                
-        //     if (response.statusCode() == 200) {
-        //         JSONObject jsonResponse = new JSONObject(response.body());
-        //         boolean isAvailable = jsonResponse.getBoolean("is_available");
-        //         if (!isAvailable) {
-        //             return ResponseEntity.badRequest().build();
-        //         }
-        //         // System.out.println("Seat Availability: " + isAvailable);
-        //     } else {
-        //         System.err.println("Error: " + response.statusCode());
-        //     }
-                        CloseableHttpClient httpClient = HttpClients.createDefault();
-                        HttpPost httpPost = new HttpPost("http://train_service:8080/check-seat");
-                        httpPost.setHeader("Content-type", "application/json");
-                        StringEntity stringEntity = new StringEntity(json.toString());
-                        httpPost.setEntity(stringEntity);
+            //     HttpClient client = HttpClient.newHttpClient();
+            //     HttpRequest request = HttpRequest.newBuilder()
+            //             .uri(URI.create("http://train_service:8080/check-seat"))
+            //             .header("Content-Type", "application/json")
+            //             .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+            //             .build();
 
-                        HttpResponse response = httpClient.execute(httpPost);
-                        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
-                        System.out.println(responseString);
+            //     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            CloseableHttpClient httpClient = HttpClients.createDefault();
+            HttpPost httpPost = new HttpPost("http://train_service:8080/check-seat");
+            httpPost.setHeader("Content-type", "application/json");
+            StringEntity stringEntity = new StringEntity(json.toString());
+            httpPost.setEntity(stringEntity);
 
-                        httpClient.close();
+            HttpResponse response = httpClient.execute(httpPost);
+            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            System.out.println(responseString);
+            if (response.getStatusLine().getStatusCode() == 200) {
+                JSONObject jsonResponse = new JSONObject(response);
+                boolean isAvailable = jsonResponse.getBoolean("is_available");
+                if (!isAvailable) {
+                    return ResponseEntity.badRequest().build();
+                }
+                // System.out.println("Seat Availability: " + isAvailable);
+            } else {
+                System.err.println("Error: " + response.getStatusLine().getStatusCode());
+                return ResponseEntity.badRequest().build();
+            }
+
+            httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
