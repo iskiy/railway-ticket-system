@@ -218,6 +218,26 @@ public class BookingController {
         );
     }
 
+    @RequestMapping(value = "/booking/Http", method = RequestMethod.POST)
+    public ResponseEntity<String> addBookingHttp(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
+        BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
+        // trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        new BookingDTO(
+                                bookingEntity.getBookingId(),
+                                bookingEntity.getUserEmail(),
+                                bookingEntity.getSeatId(),
+//                                bookingEntity.getCarriageId(),
+//                                bookingEntity.getTrainId(),
+                                bookingEntity.getPrice(),
+                                bookingEntity.getBookingDate(),
+                                bookingEntity.getStatus()
+                        )
+                )
+        );
+    }
+
     @RequestMapping(value = "/booking_http", method = RequestMethod.POST)
     public ResponseEntity<String> booking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
         BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
@@ -333,8 +353,21 @@ public class BookingController {
         );
     }
 
-    @RequestMapping(value = "/ticket/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteTicketById(@PathVariable("id") Long id) {
+    @RequestMapping(value = "/booking/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteBookingById(@PathVariable("id") Long id) {
+        BookingEntity bookingEntity = bookingService.getBookingById(id);
+        if (bookingEntity == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    errorsGenerator.generateErrorByStatus(HttpStatus.NOT_FOUND)
+            );
+        } else {
+            bookingService.deleteBookingById(id);
+            return ResponseEntity.ok(ErrorsGenerator.EMPTY_ERRORS);
+        }
+    }
+
+    @RequestMapping(value = "/booking/http/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<String> deleteBookingByIdHttp(@PathVariable("id") Long id) {
         BookingEntity bookingEntity = bookingService.getBookingById(id);
         if (bookingEntity == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
