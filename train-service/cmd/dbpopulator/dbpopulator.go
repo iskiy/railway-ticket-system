@@ -1,9 +1,11 @@
 package dbpopulator
 
 import (
-	"fmt"
+	"context"
+	"log"
+	"math/rand"
+	"strconv"
 
-	"github.com/gofiber/fiber/v2"
 	"github.com/iskiy/railway-ticket-system/train-service/internal/delivery/rest"
 	"github.com/iskiy/railway-ticket-system/train-service/internal/psql/sqlc"
 )
@@ -11,7 +13,6 @@ import (
 type DBPopulator struct {
 	Repo *sqlc.Queries
 }
-
 
 //func CreateTrains() {
 //	req := rest.CreateTrainWithFullInfoRequest{}
@@ -57,16 +58,32 @@ type DBPopulator struct {
 //	return c.Status(fiber.StatusOK).JSON(req)
 //}
 
-func PopulateDB(){
+func (p *DBPopulator) PopulateDB() {
 	train := rest.CreateTrainWithFullInfoRequest{}
 
-	stationsNames :=
+	stations := CreateStation(100)
+	for i, s := range stations {
+		id, err := p.Repo.CreateStation(context.Background(), s.StationName)
+		if err != nil {
+			log.Fatalln(err)
+		}
+		stations[i].StationID = id
+	}
 
 }
 
-func CreateStation(n int)[]sqlc.Station{
+func pickTwoRandomElements(slice []int) (int, int, error) {
+	i := rand.Intn(len(slice))
+	j := rand.Intn(len(slice) - 1)
+	if j >= i {
+		j++
+	}
+	return slice[i], slice[j], nil
+}
+
+func CreateStation(n int) []sqlc.Station {
 	stations := make([]sqlc.Station, n)
-	for i := 0; i <= n; i++{
-		stations[i] =
+	for i := 0; i <= n; i++ {
+		stations[i].StationName = "Station " + strconv.Itoa(i)
 	}
 }

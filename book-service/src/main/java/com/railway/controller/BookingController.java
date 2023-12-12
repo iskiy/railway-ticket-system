@@ -261,7 +261,7 @@ public class BookingController {
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             System.out.println(responseString);
             if (response.getStatusLine().getStatusCode() == 200) {
-                JSONObject jsonResponse = new JSONObject(response);
+                JSONObject jsonResponse = new JSONObject(responseString);
                 boolean isAvailable = jsonResponse.getBoolean("is_available");
                 if (!isAvailable) {
                     return ResponseEntity.badRequest().build();

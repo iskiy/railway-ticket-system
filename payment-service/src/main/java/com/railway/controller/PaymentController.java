@@ -272,7 +272,7 @@ public class PaymentController {
             System.out.println(responseString);
 
             if (response.getStatusLine().getStatusCode()  == 200) {
-                JSONObject jsonResponse = new JSONObject(response);
+                JSONObject jsonResponse = new JSONObject(responseString);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
                 int seatId_ = jsonResponse.getInt("seat_id");
