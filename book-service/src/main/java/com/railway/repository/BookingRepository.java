@@ -22,5 +22,7 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
     List<BookingEntity> findAllByBookingDate(Timestamp timestamp);
 
+    List<BookingEntity> findAllByBookingDateIsBefore(Timestamp timestamp);
+
     boolean existsBySeatId(Long seaId);
 }

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="fix http" />
+    <list default="true" id="1108fbd2-03ba-4ed5-bb85-5f123b9e4318" name="Changes" comment="fix http">
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/BookingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/controller/BookingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/repository/BookingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/repository/BookingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/book-service/src/main/java/com/railway/service/BookingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/book-service/src/main/java/com/railway/service/BookingService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
