@@ -263,7 +263,7 @@ public class PaymentController {
 //
 //            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet("http://train_service:8080/booking/http/"+bookingId);
+            HttpGet httpGet = new HttpGet("http://bookingservice:8080/booking/http/"+bookingId);
             httpGet.setHeader("Content-type", "application/json");
 
             HttpResponse response = httpClient.execute(httpGet);
@@ -274,7 +274,7 @@ public class PaymentController {
                 JSONObject jsonResponse = new JSONObject(responseString);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
-                int seatId_ = jsonResponse.getInt("seat_id");
+                int seatId_ = jsonResponse.getInt("seatId_");
                 Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getString("status_"));
                 responseObj = Booking.GetBookingInfoAndCheckReservationResponse.newBuilder()
                         .setBookingId(bookingId_).setUserEmail(userEmail_).setSeatId(seatId_).setStatus(status_).build();
@@ -287,9 +287,9 @@ public class PaymentController {
         }
         if (responseObj != null && responseObj.getUserEmail().equals(paymentDTO.getUserEmail()) &&
                 responseObj.getStatus() == Booking.BookingStatus.Booked) {
-            int pause = random.nextInt(30);
+            int pause = random.nextInt(2);
             TimeUnit.SECONDS.sleep(pause);
-            boolean isSuccess = random.nextBoolean();
+            boolean isSuccess = true;
             if (isSuccess) {
                 PaymentDTO dto = new PaymentDTO(paymentDTO.getPaymentId(),
                         paymentDTO.getAmount(),
@@ -323,7 +323,7 @@ public class PaymentController {
                 return addPayment(dto);
             } else {
                 if (random.nextBoolean()) {
-                    pause = random.nextInt(60);
+                    pause = random.nextInt(2);
                     TimeUnit.SECONDS.sleep(pause);
                     if (random.nextBoolean()) {
                         return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
