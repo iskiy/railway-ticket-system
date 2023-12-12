@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/iskiy/railway-ticket-system/train-service/internal/delivery/rest"
 	"github.com/iskiy/railway-ticket-system/train-service/internal/psql/sqlc"
@@ -60,7 +61,7 @@ type DBPopulator struct {
 
 func (p *DBPopulator) PopulateDB() {
 	train := rest.CreateTrainWithFullInfoRequest{}
-
+	trainNum := 100
 	stations := CreateStation(100)
 	for i, s := range stations {
 		id, err := p.Repo.CreateStation(context.Background(), s.StationName)
@@ -70,15 +71,33 @@ func (p *DBPopulator) PopulateDB() {
 		stations[i].StationID = id
 	}
 
+	trainsAmount := 100
+	carsAmount := 10
+	for i := 0; i < trainsAmount; i++ {
+		train := rest.CreateTrainWithFullInfoRequest{}
+		train.TrainName = "Train " + strconv.Itoa(i)
+		startStation, finishStation := pickStations(stations)
+		train.StartStation = startStation.StationID
+		train.FinishStation = finishStation.StationID
+		train.ArrivalTime = time.Now().AddDate(0, 0, 1).Add(6 * time.Hour)
+		train.DepartureTime = time.Now().AddDate(0, 0, 1)
+		id, err :=
+		cars := make([]rest.Car, carsAmount)
+		for i, c := range cars {
+
+		}
+	}
+
 }
 
-func pickTwoRandomElements(slice []int) (int, int, error) {
-	i := rand.Intn(len(slice))
-	j := rand.Intn(len(slice) - 1)
-	if j >= i {
-		j++
+func pickStations(stations []sqlc.Station) (sqlc.Station, sqlc.Station) {
+	rand.Seed(time.Now().UnixNano())
+	start := rand.Intn(len(stations))
+	finish := rand.Intn(len(stations) - 1)
+	if start >= finish {
+		finish++
 	}
-	return slice[i], slice[j], nil
+	return stations[start], stations[finish]
 }
 
 func CreateStation(n int) []sqlc.Station {

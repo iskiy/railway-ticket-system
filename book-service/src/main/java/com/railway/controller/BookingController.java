@@ -229,11 +229,7 @@ public class BookingController {
         json.put("seatId_", bookingEntity.getSeatId());
         json.put("status_", bookingEntity.getStatus());
         System.out.println(json);
-        return ResponseEntity.ok(
-                objectMapper.writeValueAsString(
-                        json
-                )
-        );
+        return ResponseEntity.ok(json.toString());
     }
 
     @RequestMapping(value = "/bookinghttp", method = RequestMethod.POST)

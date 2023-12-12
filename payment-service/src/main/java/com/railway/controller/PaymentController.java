@@ -263,7 +263,7 @@ public class PaymentController {
 //
 //            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpGet httpGet = new HttpGet("http://train_service:8080/booking/http/"+bookingId);
+            HttpGet httpGet = new HttpGet("http://bookingservice:8080/booking/http/"+bookingId);
             httpGet.setHeader("Content-type", "application/json");
 
             HttpResponse response = httpClient.execute(httpGet);
@@ -274,7 +274,7 @@ public class PaymentController {
                 JSONObject jsonResponse = new JSONObject(responseString);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
-                int seatId_ = jsonResponse.getInt("seat_id");
+                int seatId_ = jsonResponse.getInt("seatId_");
                 Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getInt("status_"));
                 responseObj = Booking.GetBookingInfoAndCheckReservationResponse.newBuilder()
                         .setBookingId(bookingId_).setUserEmail(userEmail_).setSeatId(seatId_).setStatus(status_).build();
