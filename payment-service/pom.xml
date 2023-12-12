@@ -134,7 +134,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.railway.BookServiceApplication</mainClass>
+                            <mainClass>com.railway.PaymentServiceApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
