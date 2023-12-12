@@ -14,10 +14,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 
 @RestController
@@ -219,26 +225,37 @@ public class BookingController {
             long seatId = bookingEntity.getSeatId();
             JSONObject json = new JSONObject();
             json.put("seat_id", seatId);
+                
+        //     HttpClient client = HttpClient.newHttpClient();
+        //     HttpRequest request = HttpRequest.newBuilder()
+        //             .uri(URI.create("http://train_service:8080/check-seat"))
+        //             .header("Content-Type", "application/json")
+        //             .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+        //             .build();
 
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://train_service:8080/check-seat"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
-                    .build();
+        //     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                
+        //     if (response.statusCode() == 200) {
+        //         JSONObject jsonResponse = new JSONObject(response.body());
+        //         boolean isAvailable = jsonResponse.getBoolean("is_available");
+        //         if (!isAvailable) {
+        //             return ResponseEntity.badRequest().build();
+        //         }
+        //         // System.out.println("Seat Availability: " + isAvailable);
+        //     } else {
+        //         System.err.println("Error: " + response.statusCode());
+        //     }
+                        CloseableHttpClient httpClient = HttpClients.createDefault();
+                        HttpPost httpPost = new HttpPost("http://train_service:8080/check-seat");
+                        httpPost.setHeader("Content-type", "application/json");
+                        StringEntity stringEntity = new StringEntity(json.toString());
+                        httpPost.setEntity(stringEntity);
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                        HttpResponse response = httpClient.execute(httpPost);
+                        String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+                        System.out.println(responseString);
 
-            if (response.statusCode() == 200) {
-                JSONObject jsonResponse = new JSONObject(response.body());
-                boolean isAvailable = jsonResponse.getBoolean("is_available");
-                if (!isAvailable) {
-                    return ResponseEntity.badRequest().build();
-                }
-                // System.out.println("Seat Availability: " + isAvailable);
-            } else {
-                System.err.println("Error: " + response.statusCode());
-            }
+                        httpClient.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

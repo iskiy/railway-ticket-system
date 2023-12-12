@@ -1,7 +1,10 @@
 package rest
 
 import (
+	"context"
+	"database/sql"
 	"fmt"
+	"log"
 	"strconv"
 	"time"
 
@@ -11,10 +14,11 @@ import (
 
 type TrainManagerHandler struct {
 	Repo *sqlc.Queries
+	Conn *sql.DB
 }
 
-func New(repo *sqlc.Queries) *TrainManagerHandler {
-	return &TrainManagerHandler{Repo: repo}
+func New(repo *sqlc.Queries, Conn *sql.DB) *TrainManagerHandler {
+	return &TrainManagerHandler{Repo: repo, Conn: Conn}
 }
 
 type CreateStationRequest struct {
@@ -56,6 +60,59 @@ func (t *TrainManagerHandler) DeleteStation(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusOK)
 }
 
+type CheckSeatIDAndReserveRequest struct {
+	SeatID int64 `json:"seat_id"`
+}
+
+type CheckSeatIDAndReserveResponse struct {
+	IsAvailable bool `json:"is_available"`
+}
+
+func (t *TrainManagerHandler) CheckSeatIDAndReserve(c *fiber.Ctx) error {
+	isAvailable := false
+	req := CheckSeatIDAndReserveRequest{}
+	err := c.BodyParser(&req)
+	if err != nil {
+		return fiber.NewError(fiber.StatusBadRequest, "bad body request")
+	}
+
+	tx, err := t.Conn.BeginTx(context.Background(), nil)
+	if err != nil {
+		return err
+	}
+	q := t.Repo.WithTx(tx)
+
+	seat, err := q.GetSeat(c.Context(), req.SeatID)
+	if err != nil {
+		if rbErr := tx.Rollback(); rbErr != nil {
+			log.Fatalf("get seat error: %v, unable to rollback: %v", err, rbErr)
+		}
+		return err
+	}
+	if seat.IsAvailable == true {
+		param := sqlc.UpdateSeatAvailabilityParams{
+			SeatID:      req.SeatID,
+			IsAvailable: false}
+
+		err := q.UpdateSeatAvailability(c.Context(), param)
+		if err != nil {
+			if rbErr := tx.Rollback(); rbErr != nil {
+				log.Fatalf("update seat error: %v, unable to rollback: %v", err, rbErr)
+			}
+			return err
+		}
+		isAvailable = true
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return c.Status(fiber.StatusOK).JSON(CheckSeatIDAndReserveResponse{
+		IsAvailable: isAvailable,
+	})
+
+}
 func (t *TrainManagerHandler) GetStation(c *fiber.Ctx) error {
 	idParam := c.Params("id")
 	id, err := strconv.Atoi(idParam)

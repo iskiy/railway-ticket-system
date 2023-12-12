@@ -52,9 +52,9 @@ services:
       - train_db
     environment:
       - POSTGRES_CONN=postgresql://root:password@train_db:5432/traindb?sslmode=disable
-      - PORT=8081
+      - PORT=8080
     ports:
-      - 8081:8081
+      - 8081:8080
       - 9090:9090
 
   train_migrate:

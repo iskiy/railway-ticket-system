@@ -33,7 +33,7 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	trainManager := rest.New(sqlc.New(conn))
+	trainManager := rest.New(sqlc.New(conn), conn)
 	grpcServer := seat.SeatReservationServer{Repo: sqlc.New(conn),
 		Conn: conn,
 	}
@@ -60,7 +60,9 @@ func main() {
 	app.Get("/trains/:id/cars", trainManager.GetTrainCars)
 	app.Get("/cars/:id", trainManager.GetCar)
 
-	port := "8081"
+	app.Post("/check-seat", trainManager.CheckSeatIDAndReserve)
+
+	port := "8080"
 	if os.Getenv("PORT") != "" {
 		port = os.Getenv("PORT")
 		fmt.Println(os.Getenv("PORT"))
