@@ -275,7 +275,7 @@ public class PaymentController {
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
                 int seatId_ = jsonResponse.getInt("seat_id");
-                Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getInt("status_"));
+                Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getString("status_"));
                 responseObj = Booking.GetBookingInfoAndCheckReservationResponse.newBuilder()
                         .setBookingId(bookingId_).setUserEmail(userEmail_).setSeatId(seatId_).setStatus(status_).build();
             } else {
