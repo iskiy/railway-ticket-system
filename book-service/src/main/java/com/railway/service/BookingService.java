@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.awt.print.Book;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,6 +89,27 @@ public class BookingService {
 //    public List<BookingEntity> findAllByTrainId(Long trainId) {
 //        return bookingRepository.findAllByTrainId(trainId);
 //    }
+
+    @Transactional
+    public void expireBooking(long minutesToExpire, long minutesToDelete) {
+        Instant instantNow = Instant.now();
+        Instant instantMinus15Minutes = instantNow.minusSeconds(minutesToExpire * 60);
+        System.out.println("Instant 15 minutes ago: " + instantMinus15Minutes);
+
+        Timestamp timestampFromInstant = Timestamp.from(instantMinus15Minutes);
+        System.out.println("Timestamp from Instant 15 minutes ago: " + timestampFromInstant);
+
+        List<BookingEntity> bookingEntities = bookingRepository.findAllByBookingDateIsBefore(timestampFromInstant);
+        for (BookingEntity bookingEntity : bookingEntities) {
+            bookingEntity.setStatus(BookingStatus.YetBooked);
+            bookingRepository.saveAndFlush(bookingEntity);
+        }
+
+        Instant instantMinus20Minutes = instantNow.minusSeconds(minutesToDelete * 60);
+        Timestamp timestampFromInstant20 = Timestamp.from(instantMinus20Minutes);
+        List<BookingEntity> bookingEntities20 = bookingRepository.findAllByBookingDateIsBefore(timestampFromInstant20);
+        bookingRepository.deleteAll(bookingEntities20);
+    }
 
     @Transactional
     public List<BookingEntity> findAllByBookingDate(Timestamp timestamp) {

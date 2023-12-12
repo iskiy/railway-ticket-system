@@ -13,6 +13,7 @@ import com.railway.utils.ErrorsGenerator;
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import org.apache.http.HttpResponse;
@@ -230,6 +231,11 @@ public class BookingController {
         json.put("status_", bookingEntity.getStatus());
         System.out.println(json);
         return ResponseEntity.ok(json.toString());
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void expireReservations() {
+        bookingService.expireBooking(15, 25);
     }
 
     @RequestMapping(value = "/bookinghttp", method = RequestMethod.POST)
