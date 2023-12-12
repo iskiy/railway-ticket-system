@@ -3,19 +3,23 @@ package com.railway.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.railway.grpc.Booking;
-import com.railway.grpc.BookingServiceClient;
-import com.railway.grpc.BookingServiceGrpc;
+//import com.railway.grpc.BookingServiceClient;
+//import com.railway.grpc.BookingServiceGrpc;
 import com.railway.model.AmountBetweenDTO;
 import com.railway.model.PaymentExtendedDTO;
 import com.railway.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import com.railway.model.PaymentDTO;
 import com.railway.model.PaymentEntity;
-import org.springframework.http.HttpRequest;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -29,7 +33,7 @@ public class PaymentController {
 
     private final Random random = new Random();
 
-    private final BookingServiceClient bookingServiceClient;
+    // private final BookingServiceClient bookingServiceClient;
 
     @RequestMapping(value = "/payment/status", method = RequestMethod.GET)
     public ResponseEntity<String> getPaymentByStatus(@RequestBody final String status) throws JsonProcessingException {
@@ -59,7 +63,7 @@ public class PaymentController {
                                         paymentEntity.getPaymentTimestamp(),
                                         paymentEntity.getMethod(),
                                         paymentEntity.getStatus()
-                                        )
+                                )
                         ).toList()
                 )
         );
@@ -71,14 +75,14 @@ public class PaymentController {
                 objectMapper.writeValueAsString(
                         paymentService.findAllByAmountIsBetween(amount.getStartAmount(), amount.getEndAmount())
                                 .stream().map(
-                                paymentEntity -> new PaymentDTO(
-                                        paymentEntity.getPaymentId(),
-                                        paymentEntity.getAmount(),
-                                        paymentEntity.getPaymentTimestamp(),
-                                        paymentEntity.getMethod(),
-                                        paymentEntity.getStatus()
+                                        paymentEntity -> new PaymentDTO(
+                                                paymentEntity.getPaymentId(),
+                                                paymentEntity.getAmount(),
+                                                paymentEntity.getPaymentTimestamp(),
+                                                paymentEntity.getMethod(),
+                                                paymentEntity.getStatus()
                                         )
-                        ).toList()
+                                ).toList()
                 )
         );
     }
@@ -190,11 +194,82 @@ public class PaymentController {
         );
     }
 
-    @RequestMapping(value = "/payment/pay", method = RequestMethod.POST)
-    public ResponseEntity<String> pay(@RequestBody final PaymentExtendedDTO paymentDTO) throws JsonProcessingException, InterruptedException {
-        Booking.GetBookingInfoAndCheckReservationResponse response =
-                bookingServiceClient.getBookingInfoAndCheckReservation(paymentDTO.getBookingId());
-        if (response.getStatus() == Booking.BookingStatus.Booked) {
+//    @RequestMapping(value = "/payment/pay", method = RequestMethod.POST)
+//    public ResponseEntity<String> pay(@RequestBody final PaymentExtendedDTO paymentDTO) throws JsonProcessingException, InterruptedException {
+//        Booking.GetBookingInfoAndCheckReservationResponse response =
+//                bookingServiceClient.getBookingInfoAndCheckReservation(paymentDTO.getBookingId());
+//        if (response.getStatus() == Booking.BookingStatus.Booked) {
+//            int pause = random.nextInt(30);
+//            TimeUnit.SECONDS.sleep(pause);
+//            boolean isSuccess = random.nextBoolean();
+//            if (isSuccess) {
+//                PaymentDTO dto = new PaymentDTO(paymentDTO.getPaymentId(),
+//                        paymentDTO.getAmount(),
+//                        paymentDTO.getPaymentTimestamp(),
+//                        paymentDTO.getMethod(),
+//                        paymentDTO.getStatus());
+//                try {
+//                    bookingServiceClient.removeBooking(paymentDTO.getPaymentId());
+//                } catch (Exception e) {
+//                    System.out.println(e.getMessage());
+//                }
+//                return addPayment(dto);
+//            }
+//            else {
+//                if (random.nextBoolean()) {
+//                    pause = random.nextInt(60);
+//                    TimeUnit.SECONDS.sleep(pause);
+//                    if (random.nextBoolean()) {
+//                        return ResponseEntity.status(HttpStatus.BAD_GATEWAY)
+//                                .body(HttpStatus.BAD_GATEWAY.getReasonPhrase());
+//                    }
+//                    return ResponseEntity.status(HttpStatus.REQUEST_TIMEOUT)
+//                            .body(HttpStatus.REQUEST_TIMEOUT.getReasonPhrase());
+//                }
+//                if (random.nextBoolean()) {
+//                    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                            .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
+//                }
+//                return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+//                        .body(HttpStatus.EXPECTATION_FAILED.getReasonPhrase());
+//            }
+//        }
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//                .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
+//    }
+
+    @RequestMapping(value = "/payment/pay_http", method = RequestMethod.POST)
+    public ResponseEntity<String> payHttp(@RequestBody final PaymentExtendedDTO paymentDTO) throws JsonProcessingException, InterruptedException {
+        Booking.GetBookingInfoAndCheckReservationResponse responseObj = null;
+        try {
+            long bookingId = paymentDTO.getBookingId();
+            JSONObject json = new JSONObject();
+            json.put("booking_id", bookingId);
+
+            HttpClient client = HttpClient.newHttpClient();
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(URI.create("http://booking_service:8080/booking/book_create_http"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JSONObject jsonResponse = new JSONObject(response.body());
+                int bookingId_ = jsonResponse.getInt("bookingId_");
+                String userEmail_ = jsonResponse.getString("userEmail_");
+                int seatId_ = jsonResponse.getInt("seat_id");
+                Booking.BookingStatus status_ = Booking.BookingStatus.valueOf(jsonResponse.getInt("seat_id"));
+                responseObj = Booking.GetBookingInfoAndCheckReservationResponse.newBuilder()
+                        .setBookingId(bookingId_).setUserEmail(userEmail_).setSeatId(seatId_).setStatus(status_).build();
+            } else {
+                System.err.println("Error: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (responseObj != null && responseObj.getStatus() == Booking.BookingStatus.Booked) {
             int pause = random.nextInt(30);
             TimeUnit.SECONDS.sleep(pause);
             boolean isSuccess = random.nextBoolean();
@@ -205,13 +280,26 @@ public class PaymentController {
                         paymentDTO.getMethod(),
                         paymentDTO.getStatus());
                 try {
-                    bookingServiceClient.removeBooking(paymentDTO.getPaymentId());
+                    long paymentId = paymentDTO.getPaymentId();
+
+                    HttpClient client = HttpClient.newHttpClient();
+                    java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                            .uri(URI.create("http://booking_service:8080/booking/http/" + paymentId))
+                            .header("Content-Type", "application/json")
+                            .DELETE()
+                            .build();
+
+                    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                    if (response.statusCode() != 200) {
+                        ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body(HttpStatus.BAD_REQUEST.getReasonPhrase());
+                    }
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
                 return addPayment(dto);
-            }
-            else {
+            } else {
                 if (random.nextBoolean()) {
                     pause = random.nextInt(60);
                     TimeUnit.SECONDS.sleep(pause);
@@ -258,8 +346,7 @@ public class PaymentController {
         boolean isSuccess = random.nextBoolean();
         if (isSuccess) {
             return addPayment(paymentDTO);
-        }
-        else {
+        } else {
             if (random.nextBoolean()) {
                 pause = random.nextInt(60);
                 TimeUnit.SECONDS.sleep(pause);
