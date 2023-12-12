@@ -270,8 +270,8 @@ public class PaymentController {
             String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
             System.out.println(responseString);
 
-            if (response.getStatusLine().getStatusCode() == 200) {
-                JSONObject jsonResponse = new JSONObject(response);
+            if (response.getStatusLine().getStatusCode()  == 200) {
+                JSONObject jsonResponse = new JSONObject(responseString);
                 int bookingId_ = jsonResponse.getInt("bookingId_");
                 String userEmail_ = jsonResponse.getString("userEmail_");
                 int seatId_ = jsonResponse.getInt("seat_id");
