@@ -2,17 +2,22 @@ package com.railway.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.railway.grpc.TrainServiceClient;
+// import com.railway.grpc.TrainServiceClient;
 import com.railway.model.BookingDTO;
 import com.railway.model.BookingEntity;
 import com.railway.model.BookingStatus;
 import com.railway.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import com.railway.utils.ErrorsGenerator;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.sql.Timestamp;
 
 @RestController
@@ -24,7 +29,7 @@ public class BookingController {
 
     private final ErrorsGenerator errorsGenerator;
 
-    private final TrainServiceClient trainServiceClient;
+    // private final TrainServiceClient trainServiceClient;
 
 //    @RequestMapping(value = "/booking/train/{id}", method = RequestMethod.GET)
 //    public ResponseEntity<String> getBookingByTrain(@PathVariable("id") Long trainId) throws JsonProcessingException {
@@ -190,7 +195,53 @@ public class BookingController {
     @RequestMapping(value = "/booking", method = RequestMethod.POST)
     public ResponseEntity<String> addBooking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
         BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
-        trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
+        // trainServiceClient.getBookingInfoAndCheckReservation(bookingEntity.getSeatId());
+        return ResponseEntity.ok(
+                objectMapper.writeValueAsString(
+                        new BookingDTO(
+                                bookingEntity.getBookingId(),
+                                bookingEntity.getUserEmail(),
+                                bookingEntity.getSeatId(),
+//                                bookingEntity.getCarriageId(),
+//                                bookingEntity.getTrainId(),
+                                bookingEntity.getPrice(),
+                                bookingEntity.getBookingDate(),
+                                bookingEntity.getStatus()
+                        )
+                )
+        );
+    }
+
+    @RequestMapping(value = "/booking_http", method = RequestMethod.POST)
+    public ResponseEntity<String> booking(@RequestBody final BookingDTO bookingDTO) throws JsonProcessingException {
+        BookingEntity bookingEntity = bookingService.createBooking(bookingDTO);
+        try {
+            long seatId = bookingEntity.getSeatId();
+            JSONObject json = new JSONObject();
+            json.put("seat_id", seatId);
+
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://train_service:8080/check-seat"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json.toString()))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JSONObject jsonResponse = new JSONObject(response.body());
+                boolean isAvailable = jsonResponse.getBoolean("is_available");
+                if (!isAvailable) {
+                    return ResponseEntity.badRequest().build();
+                }
+                // System.out.println("Seat Availability: " + isAvailable);
+            } else {
+                System.err.println("Error: " + response.statusCode());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return ResponseEntity.ok(
                 objectMapper.writeValueAsString(
                         new BookingDTO(
